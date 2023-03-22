@@ -17,7 +17,7 @@ Two of the most relevant are provided below:
 
 Definitive conclusions cannot be drawn from the data, as the sample size is very small $(n = 99)$
 
-However, there does appear to be some correlation with the age group of 18-25, that suggests that this particular age group is much more cautious that trusting. I intend collect a bit more data to verify this. A sample size of $n = 300$ should give better indications of possible trends.
+However, there does appear to be some correlation with the age group of 18-25, that suggests that this particular age group is much more cautious than trusting. I intend collect a bit more data to verify this. A sample size of $n = 300$ should give better indications of possible trends.
 
 
 ## General Discussion of the long text responses
