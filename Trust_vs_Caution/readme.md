@@ -40,9 +40,8 @@ _The following choices were given:_
 | --- | --- |
 
 </div>
+
 * Based on your previous answer, why do you think it is important to be trusting or cautious with respect to others? (Be as detailed as you like in your response)
-
-
 
 ### Here is a small excerpt of the data contained in the file "Interpersonal Relationships Research 2.csv"
 
