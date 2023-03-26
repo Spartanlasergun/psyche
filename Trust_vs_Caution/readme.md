@@ -56,14 +56,17 @@ _The following choices were given:_
 | less than 18 | Prefer not to say | Trusting | I feel it's important to show trust so the other person feels more comfortable in whatever relationship you have with the person, and so you don't have any sort of tension that can ruin the relationship before it even really starts. But being cautious is just as understandable if you've been too trusting in past relationships. |
 | 18-25 | Male | Cautious | Everyone is different. Some prefer quick decisive or even brutal honesty while others may be more akin to a lighter approach. At the end of the day it all depends on who is involved. Its important to be trusting for we truly only receive as much as we give in most respects, but being trusting to a fault is in itself a problem. Which is why a healthy blend of trust and caution is often required to service all parties involved the same respect and grace. Its important to exercise both sides to an extent for us to grow as people and hopefully grow our circle of trust alongside that. |
 
+# General Discussion
+
+The style of approach to relationships as it concerns caution and trust seems to be relatively evenly split among the participants. On the one hand, many people feel as though trust is important and would allow you to build relationships much easier; on the other hand, many people beleive that it's easy to get hurt and as such, caution is more advisable than trust when approaching relationships.
+
+The graphs below show the relationship between trust, age and gender. 
+
 <div style="display: inline-block;">
   <img src="Age_vs_Trust_Level.png" alt="age vs trust" style="width: 46%; height: auto;">
   <img src="Gender_vs_Trust_Level.png" alt="gender vs trust" style="width: 46%; height: auto;">
 </div>
 
+Across different age groups their is little to no significant variation between the choice of trust versus caution. Likewise, across genders, there does not seem to be any significant correlations. In fact, the most alarming feature of this dataset is how evenly split the participants choices seem to be alongside the strong opinions that people have presented in tandem with their views. It is important to note that this dataset is relatively small, but based on the information here, it's difficult to imagine a scenario where a persons approach (being more trusting or more cautious) does not in fact present a compatability issue at the outset of relationship. Of course, the complexity of any psychological phenomenon makes it difficult to make definitive statements, but at the very least I think that the data here does give great precedent for further investigation.
 
-Definitive conclusions cannot be drawn from the data, as the sample size is very small $(n = 309)$
-
-
-
-## General Discussion of the long text responses
+It should be noted that many of the particpants spoke about the importance of being both trusting and cautious, and as such I beleive that an ordinal level of measurement featuring a spectrum across trust and caution would be much better suited for collecting information on this issue.
