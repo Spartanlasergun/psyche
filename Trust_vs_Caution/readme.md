@@ -58,7 +58,7 @@ _The following choices were given:_
 
 # General Discussion
 
-The style of approach to relationships as it concerns caution and trust seems to be relatively evenly split among the participants. On the one hand, many people feel as though trust is important and would allow you to build relationships much easier; on the other hand, many people beleive that it's easy to get hurt and as such, caution is more advisable than trust when approaching relationships.
+Due to the relatively small size of the sample, the specfics of the data are not of great consequence and as such I think an informal discussion is more appropriate here. Many of the participants felt as though trust is important, as it allows a person to build a relationship much easier; on the other hand, many beleived that it is easy to get hurt in relationships and that consequently, caution is more advisable than trust when approaching relationships. The style of approach to relationships as it concerns caution and trust seemed to be relatively evenly split among the participants, with a small majority of 177 people describing themselves as cautious, while the remaining 132 people described themselves as trusting.
 
 The graphs below show the relationship between trust, age and gender. 
 
@@ -67,6 +67,13 @@ The graphs below show the relationship between trust, age and gender.
   <img src="Gender_vs_Trust_Level.png" alt="gender vs trust" style="width: 46%; height: auto;">
 </div>
 
-Across different age groups their is little to no significant variation between the choice of trust versus caution. Likewise, across genders, there does not seem to be any significant correlations. In fact, the most alarming feature of this dataset is how evenly split the participants choices seem to be alongside the strong opinions that people have presented in tandem with their views. It is important to note that this dataset is relatively small, but based on the information here, it's difficult to imagine a scenario where a persons approach (being more trusting or more cautious) does not in fact present a compatability issue at the outset of relationship. Of course, the complexity of any psychological phenomenon makes it difficult to make definitive statements, but at the very least I think that the data here does give great precedent for further investigation.
+Across different age groups their is little to no significant variation between the choice of trust versus caution. Likewise, across genders, there does not seem to be any significant trends in the data. In fact, the most alarming feature of this dataset is how evenly split the participants choices seem to be alongside the strong opinions that people have presented in tandem with their views. It is important to note that this dataset is relatively small, but based on the information here, it's difficult to imagine a scenario where a persons approach (being more trusting or more cautious) does not in fact present a compatibility issue at the outset of relationship. Of course, the complexity of any psychological phenomenon makes it difficult to make definitive statements, but at the very least I think that the data here does give great precedent for further investigation.
 
 It should be noted that many of the particpants spoke about the importance of being both trusting and cautious, and as such I beleive that an ordinal level of measurement featuring a spectrum across trust and caution would be much better suited for collecting information on this issue.
+
+The following word cloud was generated from the responses the participants gave. The word frequency chart that illustrates the data itself is on the right. (The frequency graph is very detailed and will require enlargement to properly view.)
+<div style="display: inline-block;">
+  <img src="Reasoning_WordCloud.png" alt="wordcloud" style="width: 46%; height: auto;">
+  <img src="Trust-Caution_WordFrequencies.png" alt="wordcloud frequency" style="width: 46%; height: auto;">
+</div>
+
