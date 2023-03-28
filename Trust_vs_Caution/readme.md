@@ -77,7 +77,7 @@ The following word cloud was generated from the responses the participants gave.
   <img src="Trust-Caution_WordFrequencies.png" alt="wordcloud frequency" style="width: 46%; height: auto;">
 </div>
 
-Aside from the wordcloud, I have abstained from doing any real qualitative analysis of this data, as I personally feel as though the field is moving past most of the standard qualitative and quantitative techniques, toward machine learning and the age of big data. 
+I have abstained from doing any real qualitative analysis of this data, as I personally feel as though the field is moving past most of the standard inferential statistics, toward machine learning and severe testing.
 
 ## Theoretical Frameworks
 
@@ -99,3 +99,6 @@ Social Learning Theory was developed by Albert Bandura in the 1970s and emphasiz
 
 ### Self-Determination Theory
 Self-Determination Theory was developed by Edward Deci and Richard Ryan in the 1980s and emphasizes the importance of meeting basic psychological needs for autonomy, competence, and relatedness in order to promote motivation and well-being. According to this theory, individuals may be more likely to trust others when their need for relatedness is met.
+
+### Erik Erkison's Psychosocial Stages of Development
+Erik Erikson's major theory is called the "Eight Stages of Psychosocial Development." It outlines a series of stages that individuals go through from birth to old age, each with its own unique psychosocial challenge or crisis that must be successfully resolved in order to move on to the next stage. These stages include trust versus mistrust, autonomy versus shame and doubt, initiative versus guilt, industry versus inferiority, identity versus role confusion, intimacy versus isolation, generativity versus stagnation, and ego integrity versus despair.
