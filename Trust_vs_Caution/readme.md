@@ -77,3 +77,28 @@ The following word cloud was generated from the responses the participants gave.
   <img src="Trust-Caution_WordFrequencies.png" alt="wordcloud frequency" style="width: 46%; height: auto;">
 </div>
 
+I have abstained from doing any real qualitative analysis of this data, as I personally feel as though the field is moving past standard inferential statistics, toward machine learning and severe testing.
+
+## Theoretical Frameworks
+
+I think that it's important to briefly go over a few of the major theories and theoretical frameworks that are applicable to the issue of trust and caution. The list no doubt will extend far beyond the information discussed below, and this problem is one of the reasons why a data centric approach is so valuable; put simply, it provides what is possibly the only objective way to attempt an understanding of any given psychological phenomenon. Nonetheless, the work that has been done so far in the field still provides some direction as it concerns the framework for data collection. So I will briefly discuss a few of these ideas.
+
+### Attachment Theory
+
+Attachment Theory was first proposed by John Bowlby in the 1950s, and later developed by Mary Ainsworth in the 1970s. The theory was developed to explain the importance of early experiences with caregivers in shaping an individual's attachment style and subsequent approach to relationships in adulthood.
+
+### Social Exchange Theory
+
+Social Exchange Theory can be traced back to the work of George Homans in the 1950s and Peter Blau in the 1960s. They proposed that individuals engage in relationships that provide them with rewards that outweigh the costs, and that this concept can be applied to various social interactions, including romantic relationships.
+
+### Cognitive Dissionace Theory
+Cognitive Dissonance Theory was first proposed by Leon Festinger in the 1950s to explain the discomfort individuals experience when their beliefs and behaviors are inconsistent. The theory suggests that individuals may be more likely to trust others when they have committed to a belief or behavior that supports trust in order to reduce cognitive dissonance.
+
+### Social Learning Theory
+Social Learning Theory was developed by Albert Bandura in the 1970s and emphasizes the importance of learning through observation and imitation of others. According to this theory, individuals may be more likely to trust or be cautious based on the behaviors and attitudes they have observed in others.
+
+### Self-Determination Theory
+Self-Determination Theory was developed by Edward Deci and Richard Ryan in the 1980s and emphasizes the importance of meeting basic psychological needs for autonomy, competence, and relatedness in order to promote motivation and well-being. According to this theory, individuals may be more likely to trust others when their need for relatedness is met.
+
+### Erik Erkison's Psychosocial Development
+Erik Erikson's major theory is called the "Eight Stages of Psychosocial Development." It outlines a series of stages that individuals go through from birth to old age, each with its own unique psychosocial challenge or crisis that must be successfully resolved in order to move on to the next stage. These stages include trust versus mistrust, autonomy versus shame and doubt, initiative versus guilt, industry versus inferiority, identity versus role confusion, intimacy versus isolation, generativity versus stagnation, and ego integrity versus despair.
