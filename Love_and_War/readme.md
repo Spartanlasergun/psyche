@@ -41,4 +41,34 @@ Here is a short excerpt from the data collected:
 | Other | No | It is a very difficult situation for John and I feel as though no option would be 100% satisfiable. If he were to confess his feelings towards Rebecca, there would be a high possibility he would lose his connection to his family and his friend. However, if Mark was to abandon his friendship with John, it can be argued that Mark was never a true friend to begin with. It can also be argued that Johns family is also equally as problematic, as skin color should not be a concern for them as long as their child is happy. In the end, John should pick what choice makes him happy, and as his family is already morally questionable, the ultimate decision would be keeping his friend or find love. I personally would suggest that everything considered, John should confess to Rebecca, as there are more upsides to finding love than keeping bad company. | Communication is key. Listen to other people. Don't react when you're in extreme emotions. |
 | Male | No | That depends on how old john is. If he risks his relationship with his family without being able to sustain a life by himself it would make life and thus the relationship really hard. If she is "the one" (which i personally think does not exist) go for it. If john has his own household and is not dependent on is family i think that the choice is a no-brainer. Considering the feelings of his friend for his to be girlfriend, it should be talked through with all 3. Maybe they can even form a relationship as a pair of 3. Also if he chooses to go for it, he should NEVER held it against her that he "left his family" for her. Yeah that should cover most of the options xP | That after the early stage it becomes "work" to keep the relationship functioning. If you can't do it don't even bother and discuss this openly. In my opinion you should be able to discuss everything with the person you have romantic feelings for even though the topic might be awkward to tackle. |
 
+The following graph represents the gender distribution across the participants:
+<div align="center">
+<img src="Gender_Frequencies.png" alt="Gender" width="50%" height="auto">
+</div>
+
+In response to the question 
+
+_Shakespeare famously said, that "all is fair in love and war." Do you agree with this?_ 
+
+the responses were as follows:
+<div align="center">
+<img src="Fairness_Frequencies.png" alt="Fairness" width="50%" height="auto">
+</div>
+
+The graph below illustrates the relationship between _Gender_ and responses to the question, "_Shakespeare famously said, that "all is fair in love and war." Do you agree with this?_". (It should be noted that the graph indicates that their is no gender bias in the responses. People say yes, no or maybe based on their personal experience and understanding)
+
+<div align="center">
+<img src="Gender_vs_Fairness.png" alt="GvsF" width="50%" height="auto">
+</div>
+
+The participants were asked 
+
+_What are some of the things that people should consider when pursuing a romantic relationship with someone else? (Be as detailed as you like in your response)_
+
+The following wordcloud and word frequency graphs were generated from the responses that the participants gave:
+
+<div display="inline; block">
+  <img src="Reasoning_WordCloud.png" alt="wordcloud" width="46%" height="auto">
+  <img src="Reasoning_WordFrequencies.png" alt="word_frequency" width="46%" height="auto">
+</div>
 
