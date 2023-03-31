@@ -43,13 +43,7 @@ Here is a short excerpt from the data collected:
 
 # General Discussion
 
-The most interesting responses came from the relationship problem that I posed to the participants. Having reviewed the data it seems that most people seem to support a relationship between John and Rebecca despite any consequences that might follow. In the eyes of the participants, the problems that John may face as a consequence of a relationship with Rebecca is the focal point of the issue _a priori_ to the circumstances themselves.
-
-This is interesting, as the problem is logically constructed in a manner that illustrates the only issue being the consequence of the _choice_ that John has to make before a relationship can begin. The benefits or drawbacks to a relationship with Rebecca are not discussed, nor is John's decision given in the scenario described. In additon to this, I asked the participants for their thoughts on the situation - not for a solution.
-
-Despite this, the MAJORITY of responses center around a discussion of the _relationship_ rather than the _choice_ at hand. The neccessary implication of a response that is retrospective in this way, is that it asserts a right course of action - in this case, that John should pursue a relationship with Rebecca. 
-
-The consensus on 'why' the romantic relationship matters more than the people it affects seems to be attributed to the percieved value of relationships itself. (i.e. if you have a lot of value for relationships you are more likely to recommend that John pursue a relationship (somewhat ironically) at the cost of his friends and family.)
+The most interesting responses came from the relationship problem that I posed to the participants. Having reviewed the data it seems that most people seem to support a relationship between John and Rebecca despite any consequences that might follow. The consensus on 'why' the romantic relationship matters more than the people it affects seems to be attributed to the percieved value of relationships itself; i.e. if you have a lot of value for relationships you are more likely to recommend that John pursue a relationship with Rebecca, (somewhat ironically) at the cost of his friends and family.
 
 Some of the graphs created from the data are shown below.
 
