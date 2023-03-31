@@ -41,6 +41,12 @@ Here is a short excerpt from the data collected:
 | Other | No | It is a very difficult situation for John and I feel as though no option would be 100% satisfiable. If he were to confess his feelings towards Rebecca, there would be a high possibility he would lose his connection to his family and his friend. However, if Mark was to abandon his friendship with John, it can be argued that Mark was never a true friend to begin with. It can also be argued that Johns family is also equally as problematic, as skin color should not be a concern for them as long as their child is happy. In the end, John should pick what choice makes him happy, and as his family is already morally questionable, the ultimate decision would be keeping his friend or find love. I personally would suggest that everything considered, John should confess to Rebecca, as there are more upsides to finding love than keeping bad company. | Communication is key. Listen to other people. Don't react when you're in extreme emotions. |
 | Male | No | That depends on how old john is. If he risks his relationship with his family without being able to sustain a life by himself it would make life and thus the relationship really hard. If she is "the one" (which i personally think does not exist) go for it. If john has his own household and is not dependent on is family i think that the choice is a no-brainer. Considering the feelings of his friend for his to be girlfriend, it should be talked through with all 3. Maybe they can even form a relationship as a pair of 3. Also if he chooses to go for it, he should NEVER held it against her that he "left his family" for her. Yeah that should cover most of the options xP | That after the early stage it becomes "work" to keep the relationship functioning. If you can't do it don't even bother and discuss this openly. In my opinion you should be able to discuss everything with the person you have romantic feelings for even though the topic might be awkward to tackle. |
 
+# General Discussion
+
+Very few inferences can really be made from this dataset. The most interesting responses came from the relationship problem that I posed to the participants. Having reviewed the data it seems that most people seem to support a relationship between John and Rebecca despite any consequences that might follow; rather, the problems that John may face as a consequence of a relationship with Rebecca is the focal point of the issue _a priori_ to the circumstances themselves. This is interesting as the problem is logically posed to illustrate the only problem as the consequence of the choice that John has to make before a relationship can begin. The consensus on 'why' the romantic relationship matters more than the people it affects seems to be attributed to the percieved value of relationships itself. (i.e. if you have a lot of value for relationships you are more likely to reccommmend that John pursue a relationship at the cost of his friends and family.) There is a fine point of distinction here that is worth examining, and that is the difference between a persons' value for **romantic** relationships, versus the value that a person has for relationships in general. Research along those lines should yield an actual solution to the problem. I would posit that somehow, those two values are mutually exclusive and independent which can directly be attributed to the nuance and variation in responses.
+
+Some of the graphs created from the data are shown below.
+
 The following graph represents the gender distribution across the participants:
 <div align="center">
 <img src="Gender_Frequencies.png" alt="Gender" width="50%" height="auto">
@@ -65,10 +71,9 @@ The participants were asked
 
 _What are some of the things that people should consider when pursuing a romantic relationship with someone else? (Be as detailed as you like in your response)_
 
-The following wordcloud and word frequency graphs were generated from the responses that the participants gave:
+The following wordcloud and word frequency graph was generated from the responses that the participants gave:
 
 <div display="inline; block">
   <img src="Reasoning_WordCloud.png" alt="wordcloud" width="46%" height="auto">
   <img src="Reasoning_WordFrequencies.png" alt="word_frequency" width="46%" height="auto">
 </div>
-
