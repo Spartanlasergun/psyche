@@ -1,104 +1,79 @@
-# Trust vs Caution
+# Love and War
 
-A small sample of data was collected to understand the why some people may be trusting or cautious in their approach to interpersonal relationships.
+Shakespeare famously said that "all is fair in love and war". I was curious if this was a widely accepted notion among people, so I decided to collect a bit of data. To do this, I asked people very directly what they thought about Shakespeare's statement, and I also posed a complex relationship problem to the participants to ensure that there was genuine reflection being done. A total of 279 responses were collected, and the full dataset is available in the file "Love_and_War.csv". 
 
-The dataset is contained in the file 'Interpersonal Relationships Research 2.csv'
+The following questions were posed to participants:
 
-An ipython notebook that examines the spread of the data across across age, gender, etc. is available in the file 'Trust_vs_Caution.ipynb'
+* What is your gender?
 
-The relevant graphs are also stored as png images in this folder.
-
-This dataset was originally a small sample of 99 participants, but additional data was collected to help identify potential trends. The final sample accounted for a total of 309 participants. In general, it should be noted that this sample size is still too small to draw definitive conclusions.
-
-The participants were asked to answer the following questions?
-* What is your Age?
 <div align="center">
 
-_The following age groups were given as choices:_
+_The following options were given for gender:_
 
-| less than 18 | 18-25 | 26-35 | 36-50 | 50 and above |
-| --- | --- | --- | --- | --- |
-
-</div>
-
-* What is your Gender?
-<div align="center">
-
-_The following gender choices were given:_
-  
-| Male | Female | Other | Prefer not to say |
+| Male | Female | Prefer not to say | Other |
 | --- | --- | --- | --- |
 
 </div>
 
-* With respect to interpersonal relationships, would you describe yourself as trusting or cautious?	
+* Shakespeare famously said, that "all is fair in love and war." Do you agree with this?
+
 <div align="center">
 
-_The following choices were given:_
-  
-| Trusting | Cautious |
-| --- | --- |
+_The following options were given:_
+
+| Yes | No | Maybe |
+| --- | --- | --- |
 
 </div>
 
-* Based on your previous answer, why do you think it is important to be trusting or cautious with respect to others? (Be as detailed as you like in your response)
+* Consider the following situation: John is attracted to a woman named Rebecca. John's friend Mark is also interested in Rebecca. Rebecca is extremely beautiful. If John were to begin a relationship with Rebecca, all of his friends would be envious of him including Mark who has strong feelings for her. There is another problem. John knows that his family would not approve of Rebecca because of her skin color. John is unsure of how to proceed. Rebecca has already indicated that she is attracted to him and if John would like to begin a relationship with her all he has to do is tell her how he feels. What are your thoughts on this situation? (Be as detailed as you like in your response.)
 
-### Here is a small excerpt of the data contained in the file "Interpersonal Relationships Research 2.csv"
+* What are some of the things that people should consider when pursuing a romantic relationship with someone else? (Be as detailed as you like in your response)
 
-| What is your Age? | What is your Gender? | With respect to interpersonal relationships, would you describe yourself as trusting or cautious? | Based on your previous answer, why do you think it is important to be trusting or cautious with respect to others? (Be as detailed as you like in your response) |
+Here is a short excerpt from the data collected:
+
+| What is your gender? | Shakespeare famously said, that "all is fair in love and war." Do you agree with this? | Consider the following situation: John is attracted to a woman named Rebecca. John's friend Mark is also interested in Rebecca. Rebecca is extremely beautiful. If John were to begin a relationship with Rebecca, all of his friends would be envious of him including Mark who has strong feelings for her. There is another problem. John knows that his family would not approve of Rebecca because of her skin color. John is unsure of how to proceed. Rebecca has already indicated that she is attracted to him and if John would like to begin a relationship with her all he has to do is tell her how he feels. What are your thoughts on this situation? (Be as detailed as you like in your response.) | What are some of the things that people should consider when pursuing a romantic relationship with someone else? (Be as detailed as you like in your response) |
 | --- | --- | --- | --- |
-| 26-35 | Male | Trusting | I see that it is important to be a little of each, as healthy as possible, without excesses. I believe the key is to be careful until you know you can trust the person completely.|
-| 18-25 | Female | Cautious | There are so many different motivations people have, and with them, many different opportunities for them to want to hurt others. It's safer just to avoid people who ask anything of you, just in case that leads to them taking advantage of you. |
-| less than 18 | Male | Cautious | Personally I just have trouble trusting people, and think that caution is important in any relationship, it keeps you prepared for, if someone does something you have explicitly stated your against or when they display red flags. |
-| 18-25 | Female | Trusting | Unless that other is my very close friend, I wouldn't be that trusting. Trust is very important in gaining relationships with others, no man is an island after all.. One way on another, a person is going to need help and they can't achieve that if they're too cautious |
-| 36-50 | Female | Trusting | If you are always cautious and trust no one, then you will always be in the mind set of uneasiness, untrusting, and the worse feeling of all... alone. We may need alone time, but nobody truly wants to be alone. I have found with having trust in my partner, I am no longer alone and life is a lot easier, especially in raising the kids. Prior, there was no trust and a lot of abuse. |
-| 26-35 | Other | Cautious | Because we live in a world where everything is perceived as survival of the fittest. Trusting others can be at a detriment to one's own health, especially when you factor in things like race and SO. |
-| less than 18 | Prefer not to say | Trusting | I feel it's important to show trust so the other person feels more comfortable in whatever relationship you have with the person, and so you don't have any sort of tension that can ruin the relationship before it even really starts. But being cautious is just as understandable if you've been too trusting in past relationships. |
-| 18-25 | Male | Cautious | Everyone is different. Some prefer quick decisive or even brutal honesty while others may be more akin to a lighter approach. At the end of the day it all depends on who is involved. Its important to be trusting for we truly only receive as much as we give in most respects, but being trusting to a fault is in itself a problem. Which is why a healthy blend of trust and caution is often required to service all parties involved the same respect and grace. Its important to exercise both sides to an extent for us to grow as people and hopefully grow our circle of trust alongside that. |
+| Male | Maybe | John and Mark should talk it out about since they are both interested in Rebecca to not damage their friendship before John talks to Rebecca. John and Rebecca's relationship should take priority over his family's disapproval, however this may not be possible depending on unknown information. If John still need's his family support to live, either because he is a minor living in their household or cannot financially live on his own, his relationship with Rebecca might need to be secret until he has safe means to live away from his disapproving family. | Romance is complicated. Long distance relationships can be difficult even with internet bridging the gap. How family and friends feel about the relationship. Even things like past relationship history can be a factor in how someone decides to pursue a new romantic relationship. |
+| Female | No | I think it's a tough situation for John. It all depends on what he values. If it's his friendship with Mark or his family's validation, then he won't pursue Rebecca. But if he values Rebecca as a person, or as a love interest more, then he'll pursue her. Ultimately, he should choose whatever makes him the most happy, or aligns with his morals more. | To be honest, and I know this isn't completely realistic, all that matter is if you love the other person, and they love you back. People can move mountains for someone they love, romantic or not. As long as both parties have a similar passion and dedication for the other, there's nothing they need to worry about. (Besides death lol) |
+| Male | Yes | I think they should be guided by their feelings, not taking into account the opinion of third parties, the two of them being the only constant. | 'complementation', obviously there would be other variants but I think it should be taken into account when looking for a relationship. |
+| Female | Maybe | Well... it's hard to choose between the object of love and friendship. But if Jhon and Rebecca realy love each other they should be together  despite what family or society thought. And there is another way: Rebecca can finde another person to build relationships. Not Jhon or Mark | mutual respect, trust, support, understanding,  common interests,  similar views on life |
+| Other | No | It is a very difficult situation for John and I feel as though no option would be 100% satisfiable. If he were to confess his feelings towards Rebecca, there would be a high possibility he would lose his connection to his family and his friend. However, if Mark was to abandon his friendship with John, it can be argued that Mark was never a true friend to begin with. It can also be argued that Johns family is also equally as problematic, as skin color should not be a concern for them as long as their child is happy. In the end, John should pick what choice makes him happy, and as his family is already morally questionable, the ultimate decision would be keeping his friend or find love. I personally would suggest that everything considered, John should confess to Rebecca, as there are more upsides to finding love than keeping bad company. | Communication is key. Listen to other people. Don't react when you're in extreme emotions. |
+| Male | No | That depends on how old john is. If he risks his relationship with his family without being able to sustain a life by himself it would make life and thus the relationship really hard. If she is "the one" (which i personally think does not exist) go for it. If john has his own household and is not dependent on is family i think that the choice is a no-brainer. Considering the feelings of his friend for his to be girlfriend, it should be talked through with all 3. Maybe they can even form a relationship as a pair of 3. Also if he chooses to go for it, he should NEVER held it against her that he "left his family" for her. Yeah that should cover most of the options xP | That after the early stage it becomes "work" to keep the relationship functioning. If you can't do it don't even bother and discuss this openly. In my opinion you should be able to discuss everything with the person you have romantic feelings for even though the topic might be awkward to tackle. |
 
 # General Discussion
 
-Due to the relatively small size of the sample, the specfics of the data are not of great consequence and as such I think an informal discussion is more appropriate here. Many of the participants felt as though trust is important, as it allows a person to build a relationship much easier; on the other hand, many beleived that it is easy to get hurt in relationships and that consequently, caution is more advisable than trust when approaching relationships. The style of approach to relationships as it concerns caution and trust seemed to be relatively evenly split among the participants, with a small majority of 177 people describing themselves as cautious, while the remaining 132 people described themselves as trusting.
+The most interesting responses came from the relationship problem that I posed to the participants. Having reviewed the data it seems that most people seem to support a relationship between John and Rebecca despite any consequences that might follow. The consensus on 'why' the romantic relationship matters more than the people it affects seems to be attributed to the percieved value of relationships itself; i.e. if you have a lot of value for relationships you are more likely to recommend that John pursue a relationship with Rebecca, (somewhat ironically) at the cost of his friends and family.
 
-The graphs below show the relationship between trust, age and gender. 
+Some of the graphs created from the data are shown below.
 
-<div style="display: inline-block;">
-  <img src="Age_vs_Trust_Level.png" alt="age vs trust" style="width: 46%; height: auto;">
-  <img src="Gender_vs_Trust_Level.png" alt="gender vs trust" style="width: 46%; height: auto;">
+The following graph represents the gender distribution across the participants:
+<div align="center">
+<img src="Gender_Frequencies.png" alt="Gender" width="50%" height="auto">
 </div>
 
-Across different age groups their is little to no significant variation between the choice of trust versus caution. Likewise, across genders, there does not seem to be any significant trends in the data. In fact, the most alarming feature of this dataset is how evenly split the participants choices seem to be alongside the strong opinions that people have presented in tandem with their views. It is important to note that this dataset is relatively small, but based on the information here, it's difficult to imagine a scenario where a persons approach (being more trusting or more cautious) does not in fact present a compatibility issue at the outset of relationship. Of course, the complexity of any psychological phenomenon makes it difficult to make definitive statements, but at the very least I think that the data here does give great precedent for further investigation.
+In response to the question 
 
-It should be noted that many of the particpants spoke about the importance of being both trusting and cautious, and as such I beleive that an ordinal level of measurement featuring a spectrum across trust and caution would be much better suited for collecting information on this issue.
+_Shakespeare famously said, that "all is fair in love and war." Do you agree with this?_ 
 
-The following word cloud was generated from the responses the participants gave. The word frequency chart that illustrates the data itself is on the right. (The frequency graph is very detailed and will require enlargement to properly view.)
-<div style="display: inline-block;">
-  <img src="Reasoning_WordCloud.png" alt="wordcloud" style="width: 46%; height: auto;">
-  <img src="Trust-Caution_WordFrequencies.png" alt="wordcloud frequency" style="width: 46%; height: auto;">
+the responses were as follows:
+<div align="center">
+<img src="Fairness_Frequencies.png" alt="Fairness" width="50%" height="auto">
 </div>
 
-I have abstained from doing any real qualitative analysis of this data, as I personally feel as though the field is moving past standard inferential statistics, toward machine learning and severe testing.
+The graph below illustrates the relationship between _Gender_ and responses to the question, "_Shakespeare famously said, that "all is fair in love and war." Do you agree with this?_". (It should be noted that the graph indicates that their is no gender bias in the responses. People say yes, no or maybe based on their personal experience and understanding)
 
-## Theoretical Frameworks
+<div align="center">
+<img src="Gender_vs_Fairness.png" alt="GvsF" width="50%" height="auto">
+</div>
 
-I think that it's important to briefly go over a few of the major theories and theoretical frameworks that are applicable to the issue of trust and caution. The list no doubt will extend far beyond the information discussed below, and this problem is one of the reasons why a data centric approach is so valuable; put simply, it provides what is possibly the only objective way to attempt an understanding of any given psychological phenomenon. Nonetheless, the work that has been done so far in the field still provides some direction as it concerns the framework for data collection. So I will briefly discuss a few of these ideas.
+The participants were asked 
 
-### Attachment Theory
+_What are some of the things that people should consider when pursuing a romantic relationship with someone else? (Be as detailed as you like in your response)_
 
-Attachment Theory was first proposed by John Bowlby in the 1950s, and later developed by Mary Ainsworth in the 1970s. The theory was developed to explain the importance of early experiences with caregivers in shaping an individual's attachment style and subsequent approach to relationships in adulthood.
+The following wordcloud and word frequency graph was generated from the responses that the participants gave:
 
-### Social Exchange Theory
-
-Social Exchange Theory can be traced back to the work of George Homans in the 1950s and Peter Blau in the 1960s. They proposed that individuals engage in relationships that provide them with rewards that outweigh the costs, and that this concept can be applied to various social interactions, including romantic relationships.
-
-### Cognitive Dissionace Theory
-Cognitive Dissonance Theory was first proposed by Leon Festinger in the 1950s to explain the discomfort individuals experience when their beliefs and behaviors are inconsistent. The theory suggests that individuals may be more likely to trust others when they have committed to a belief or behavior that supports trust in order to reduce cognitive dissonance.
-
-### Social Learning Theory
-Social Learning Theory was developed by Albert Bandura in the 1970s and emphasizes the importance of learning through observation and imitation of others. According to this theory, individuals may be more likely to trust or be cautious based on the behaviors and attitudes they have observed in others.
-
-### Self-Determination Theory
-Self-Determination Theory was developed by Edward Deci and Richard Ryan in the 1980s and emphasizes the importance of meeting basic psychological needs for autonomy, competence, and relatedness in order to promote motivation and well-being. According to this theory, individuals may be more likely to trust others when their need for relatedness is met.
-
-### Erik Erkison's Psychosocial Development
-Erik Erikson's major theory is called the "Eight Stages of Psychosocial Development." It outlines a series of stages that individuals go through from birth to old age, each with its own unique psychosocial challenge or crisis that must be successfully resolved in order to move on to the next stage. These stages include trust versus mistrust, autonomy versus shame and doubt, initiative versus guilt, industry versus inferiority, identity versus role confusion, intimacy versus isolation, generativity versus stagnation, and ego integrity versus despair.
+<div display="inline; block">
+  <img src="Reasoning_WordCloud.png" alt="wordcloud" width="46%" height="auto">
+  <img src="Reasoning_WordFrequencies.png" alt="word_frequency" width="46%" height="auto">
+</div>
