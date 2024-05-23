@@ -15,7 +15,7 @@ print("Reading Data...")
 data = pd.read_csv('Conflict Scenarios Research.csv')
 # create documents list
 documents = data["Describe a past experience you've had that involved conflict with a family member, friend, or significant other. Be as detailed as you like."].tolist()
-print("Number of Documents: " + str(len(conflict)))
+print("Number of Documents: " + str(len(documents)))
 
 print("Initializing main class...")
 
