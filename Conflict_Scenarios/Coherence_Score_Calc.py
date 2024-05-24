@@ -86,7 +86,7 @@ for tpc in topics_per_cluster:
         print("Calculating Scores:\ntopics per cluster = " + str(tpc) + "\n" + "min cluster size = " + str(cs))
         
         # set up clustering algorithm (in this case - HDBSCAN) #test leaf
-        hdbscan_model = HDBSCAN(min_cluster_size=cs, metric='euclidean', cluster_selection_method='eom')
+        hdbscan_model = HDBSCAN(min_cluster_size=cs, metric='euclidean', cluster_selection_method='leaf')
 
         topic_model = BERTopic(top_n_words=tpc, min_topic_size=30, umap_model=umap_model, hdbscan_model=hdbscan_model)
         topics, probs = topic_model.fit_transform(get_text)
