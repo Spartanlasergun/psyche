@@ -2,7 +2,6 @@ import pandas as pd
 import spacy
 import nltk
 from nltk.stem import WordNetLemmatizer
-from itertools import chain
 from nltk.corpus import stopwords
 from bertopic import BERTopic
 from umap import UMAP
@@ -17,132 +16,43 @@ data = pd.read_csv('Conflict Scenarios Research.csv')
 documents = data["Describe a past experience you've had that involved conflict with a family member, friend, or significant other. Be as detailed as you like."].tolist()
 print("Number of Documents: " + str(len(documents)))
 
-print("Initializing main class...")
+# preprocessing function
+def preprocessing(documents):
+    # Load the English language model
+    nlp = spacy.load("en_core_web_sm")
 
-class info:
-    def __init__(self, documents, lowercasing=False, lemmatization=False):
-        self.lowercase = lowercasing
-        self.lemmatization = lemmatization
-        
-        # Load the English language model
-        self.nlp = spacy.load("en_core_web_sm")
+    lemmatizer = WordNetLemmatizer()
 
-        # Initialize the WordNet lemmatizer
-        if lemmatization:
-            self.lemmatizer = WordNetLemmatizer()
+    tokenized_docs = []
+    for item in documents:
+        doc = nlp(item)
+        tokens = [token.text for token in doc] # process token into list
+        lowercase_list = [word.lower() for word in tokens] # lowercase all words to improve search
+        tokenized_docs.append(lowercase_list) 
 
-        # declare stopwords for global usage
-        self.others = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve"]
-
-        dict = []
-        self.tokenized_docs = []
-        for item in documents:
-            doc = self.nlp(item)
-            tokens = [token.text for token in doc] # process token into list
-            if lowercasing:
-                lowercase_list = [word.lower() for word in tokens] # lowercase all words to improve search
-                tokens = lowercase_list
-            if lemmatization:
-                lemmatized_words = [self.lemmatizer.lemmatize(word) for word in tokens] # lemmatize words to enhace retrieval comprehension
-                tokens = lemmatized_words
-            self.tokenized_docs.append(tokens) 
-            temp = set(tokens) # reduce overhead by performing initial set
-            for term in temp:
-                dict.append(term)
-
-        dictionary = set(dict)
-
-        self.inverted_index = []
-        for term in dictionary:
-            temp = [term]
-            for doc in self.tokenized_docs:
-                for word in doc:
-                    if term == word:
-                        temp.append(self.tokenized_docs.index(doc))
-                        break  # break operation to prevent duplicate postings
-            self.inverted_index.append(temp)
-
-    def query(self, phrase):
-        # Tokenize input
-        tokenize = self.nlp(phrase)
-        tokens = [token.text for token in tokenize] # process token into list
-        if self.lowercase:
-            lowercased = [word.lower() for word in tokens] # lowercase all words to improve search
-            tokens = lowercased
-        if self.lemmatization:
-            lemma = [self.lemmatizer.lemmatize(word) for word in tokens] # final lemmatization of query to match postings
-            tokens = lemma
-            
+    stop_words = list(set(stopwords.words('english')))
+    others = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve"]
+    for item in others:
+        stop_words.append(item)
     
-        # retrieve postings for each token
-        retrieve = set(tokens)
-        postings = []
-        for word in retrieve:
-            for post in self.inverted_index:
-                if word == post[0]:
-                    postings.append(post)
-    
-        # check for intersection
-        combine = list(chain.from_iterable(postings))
-        exact_matches = []
-        exact_count = len(retrieve)
-        for item in combine:
-            n = combine.count(item)
-            if n == exact_count:
-                exact_matches.append(item)
-                
-        if len(exact_matches) > 0:
-            matches = set(exact_matches)
-        else:
-            matches = set(combine)
+    processed = []
+    corpus_tokens = []
+    for token_text in tokenized_docs:
+        output = ""
+        temp = []
+        for word in token_text:
+            if word not in stop_words:
+                output = output + " " + word
+                temp.append(word)
+        processed.append(output)
+        corpus_tokens.append(temp)
             
-        # retrieve relevant documents
-        results = []
-        for item in matches:
-            if isinstance(item, int):
-                content = documents[item]
-                results.append(content)
-                   
-        return results
-
-    def text_cleaning(self):
-        stop_words = list(set(stopwords.words('english')))
-        
-        for item in self.others:
-            stop_words.append(item)
-        filter = []
-        for token_text in self.tokenized_docs:
-            output = ""
-            for word in token_text:
-                if word not in stop_words:
-                    output = output + " " + word
-            filter.append(output)
-            
-        return filter
-
-    def get_tokenized_corpus(self):
-        stop_words = list(set(stopwords.words('english')))
-        
-        for item in self.others:
-            stop_words.append(item)
-        filter = []
-        for token_text in self.tokenized_docs:
-            temp = []
-            for word in token_text:
-                if word not in stop_words:
-                    temp.append(word)
-            filter.append(temp)
-            
-        return filter
-
-# generate search
-print("Generating Search...")
-information = info(documents, lowercasing=True, lemmatization=True)
+    return processed, tokenized_docs
 
 
-# get cleaned corpus for training with BERTopic
-print("Cleaning Text...")
-get_text = information.text_cleaning()
+# get cleaned raw and tokenized data for training with BERTopic
+print("Preprocessing Text...")
+get_text, tokenized_corpus = preprocessing(documents)
 
 
 # Set up UMAP with a fixed random state
