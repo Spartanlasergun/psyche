@@ -9,7 +9,7 @@ from hdbscan import HDBSCAN
 from gensim import corpora
 from gensim.models.coherencemodel import CoherenceModel
 
-# Read Book of Isaiah From Archive
+# Read Data From Archive
 print("Reading Data...")
 data = pd.read_csv('Conflict Scenarios Research.csv')
 # create documents list
@@ -27,7 +27,7 @@ def preprocessing(documents):
     for item in documents:
         doc = nlp(item)
         tokens = [token.text for token in doc] # process token into list
-        lowercase_list = [word.lower() for word in tokens] # lowercase all words to improve search
+        lowercase_list = [word.lower() for word in tokens] # lowercase all words
         tokenized_docs.append(lowercase_list) 
 
     stop_words = list(set(stopwords.words('english')))
