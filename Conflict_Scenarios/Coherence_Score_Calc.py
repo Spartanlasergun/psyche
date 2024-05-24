@@ -8,6 +8,7 @@ from umap import UMAP
 from hdbscan import HDBSCAN
 from gensim import corpora
 from gensim.models.coherencemodel import CoherenceModel
+from sentence_transformers import SentenceTransformer
 
 # Read Data From Archive
 print("Reading Data...")
@@ -65,6 +66,9 @@ umap_model = UMAP(n_neighbors=15, n_components=5, min_dist=0.0, metric='cosine',
 topics_per_cluster = range(2, 7, 1)
 cluster_size = range(2, 15, 1)
 
+# set transformer model for use with BERTopic
+sentence_model = SentenceTransformer("all-mpnet-base-v2")
+
 # create dictionary of unique words from the tokenized corpus
 print("Creating dictionary for Gensim calculation...")
 dict_ = corpora.Dictionary(tokenized_corpus)
@@ -85,10 +89,17 @@ for tpc in topics_per_cluster:
     for cs in cluster_size:
         print("Calculating Scores:\ntopics per cluster = " + str(tpc) + "\n" + "min cluster size = " + str(cs))
         
-        # set up clustering algorithm (in this case - HDBSCAN) #test leaf
-        hdbscan_model = HDBSCAN(min_cluster_size=cs, metric='euclidean', cluster_selection_method='leaf')
+        # set up clustering algorithm
+        hdbscan_model = HDBSCAN(min_cluster_size=cs, 
+                                metric='euclidean', 
+                                cluster_selection_method='eom')
 
-        topic_model = BERTopic(top_n_words=tpc, min_topic_size=30, umap_model=umap_model, hdbscan_model=hdbscan_model)
+        topic_model = BERTopic(top_n_words=tpc, 
+                               min_topic_size=30, # note: min_topic_size is not used when the HDBSCAN algorithm is specified
+                               umap_model=umap_model, 
+                               hdbscan_model=hdbscan_model,
+                               embedding_model=sentence_model)
+
         topics, probs = topic_model.fit_transform(get_text)
 
         # Get topics as a dictionary
