@@ -50,7 +50,7 @@ def preprocessing(documents):
     return processed, tokenized_docs
 
 
-# get cleaned raw and tokenized data for training with BERTopic
+# get cleaned raw and tokenized data for training with BERTopic and coherence calculation
 print("Preprocessing Text...")
 get_text, tokenized_corpus = preprocessing(documents)
 
@@ -66,10 +66,6 @@ hdbscan_model = HDBSCAN(min_cluster_size=10, metric='euclidean', cluster_selecti
 #------------------------------------------------------------------------------------------------------------
 # Calculate Coherence - GRID SEARCH
 topics_per_cluster = range(2, 25, 1)
-
-# get tokenized corpus for coherence calculation
-print("Fetching tokenized corpus for Gensim calculation...")
-tokenized_corpus = information.get_tokenized_corpus()
 
 # create dictionary of unique words from the tokenized corpus
 print("Creating dictionary for Gensim calculation...")
