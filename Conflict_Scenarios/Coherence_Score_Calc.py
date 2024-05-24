@@ -59,13 +59,11 @@ get_text, tokenized_corpus = preprocessing(documents)
 print("Setting up BERTopic model...")
 umap_model = UMAP(n_neighbors=15, n_components=5, min_dist=0.0, metric='cosine', random_state=42)
 
-#Set up HDBSCAN
-hdbscan_model = HDBSCAN(min_cluster_size=10, metric='euclidean', cluster_selection_method='eom')
-
 
 #------------------------------------------------------------------------------------------------------------
 # Calculate Coherence - GRID SEARCH
-topics_per_cluster = range(2, 25, 1)
+topics_per_cluster = range(2, 7, 1)
+cluster_size = range(2, 15, 1)
 
 # create dictionary of unique words from the tokenized corpus
 print("Creating dictionary for Gensim calculation...")
@@ -81,35 +79,41 @@ high_score = []
 scores = []
 scoresheet = open("scores.txt", 'w', encoding='utf-8')
 
-# Generate BERTopic Model
+# Conduct Grid Search
 for tpc in topics_per_cluster:
-    print("Calculating Scores (topics per cluster = " + str(tpc) + ")")
-    topic_model = BERTopic(top_n_words=tpc, min_topic_size=30, umap_model=umap_model, hdbscan_model=hdbscan_model)
-    topics, probs = topic_model.fit_transform(get_text)
+    print("------------------------------------------------------------------------------------------")
+    for cs in cluster_size:
+        print("Calculating Scores:\ntopics per cluster = " + str(tpc) + "\n" + "min cluster size = " + str(cs))
+        
+        # set up clustering algorithm (in this case - HDBSCAN) #test leaf
+        hdbscan_model = HDBSCAN(min_cluster_size=cs, metric='euclidean', cluster_selection_method='eom')
 
-    # Get topics as a dictionary
-    topic_dict = topic_model.get_topics()
-    topic_list = list(topic_dict.values())
-    # Convert topics dictionary to a list of lists
-    raw_topics = []
-    for item in topic_list:
-        temp = []
-        for topics in item:
-            temp.append(topics[0])
-        raw_topics.append(temp)
+        topic_model = BERTopic(top_n_words=tpc, min_topic_size=30, umap_model=umap_model, hdbscan_model=hdbscan_model)
+        topics, probs = topic_model.fit_transform(get_text)
 
-    raw_topics.pop(0) # remove low prob words
+        # Get topics as a dictionary
+        topic_dict = topic_model.get_topics()
+        topic_list = list(topic_dict.values())
+        # Convert topics dictionary to a list of lists
+        raw_topics = []
+        for item in topic_list:
+            temp = []
+            for topics in item:
+                temp.append(topics[0])
+            raw_topics.append(temp)
 
-    #calculate coherence and obtain score
-    cm = CoherenceModel(topics=raw_topics, texts=tokenized_corpus, corpus=doc_term_matrix, dictionary=dict_, coherence='c_npmi')
-    coherence = cm.get_coherence()
-    temp = str(coherence) + "," + str(tpc) + "\n"
+        raw_topics.pop(0) # remove low prob words
 
-    scoresheet.write(temp)
+        #calculate coherence and obtain score
+        cm = CoherenceModel(topics=raw_topics, texts=tokenized_corpus, corpus=doc_term_matrix, dictionary=dict_, coherence='c_npmi')
+        coherence = cm.get_coherence()
+        temp = str(coherence) + "," + str(tpc) + "," + str(cs) + "\n"
 
-    if coherence > best_cm:
-        best_cm = coherence
-        high_score = [best_cm, tpc]
+        scoresheet.write(temp)
+
+        if coherence > best_cm:
+            best_cm = coherence
+            high_score = [best_cm, tpc]
 
 scoresheet.close()
 print("High Score:")
