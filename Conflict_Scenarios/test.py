@@ -25,7 +25,7 @@ def preprocessing(documents):
         tokenized_docs.append(lowercase_list) 
 
     stop_words = list(set(stopwords.words('english')))
-    others = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve"]
+    others = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve", " "]
     for item in others:
         stop_words.append(item)
     

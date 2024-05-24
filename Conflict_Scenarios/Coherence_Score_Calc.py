@@ -47,7 +47,7 @@ def preprocessing(documents):
         processed.append(output)
         corpus_tokens.append(temp)
             
-    return processed, tokenized_docs
+    return processed, corpus_tokens
 
 
 # get cleaned raw and tokenized data for training with BERTopic and coherence calculation
