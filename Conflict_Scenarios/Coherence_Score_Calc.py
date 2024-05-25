@@ -29,10 +29,13 @@ def preprocessing(documents):
         doc = nlp(item)
         tokens = [token.text for token in doc] # process token into list
         lowercase_list = [word.lower() for word in tokens] # lowercase all words
-        tokenized_docs.append(lowercase_list) 
+        # lemmatize words to prevent overlap between extremely similar words (e.g. "friend" and "friends")
+        lemmatized_words = [lemmatizer.lemmatize(word) for word in lowercase_list]
+        tokenized_docs.append(lemmatized_words) 
 
     stop_words = list(set(stopwords.words('english')))
-    others = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve", " "]
+    others = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve", " ",
+              "get", "conflict"]
     for item in others:
         stop_words.append(item)
     
