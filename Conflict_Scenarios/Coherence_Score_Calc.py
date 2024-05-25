@@ -62,7 +62,7 @@ get_text, tokenized_corpus = preprocessing(documents)
 
 #------------------------------------------------------------------------------------------------------------
 # Calculate Coherence - GRID SEARCH
-topics_per_cluster = [3] #range(2, 6, 1)
+topics_per_cluster = range(2, 6, 1)
 cluster_size = range(10, 31, 1)
 
 # Set up UMAP with a fixed random state
@@ -104,8 +104,8 @@ for tpc in topics_per_cluster:
         # Setup BERTopic with a custom CountVectorizer
         vectorizer_model = CountVectorizer(min_df=10, # minimum word frequency occurence for topic inclusion
                                            max_features=150, # top 'n' most frequently occuring words to be included in the topic term matrix
-                                           ngram_range=(1, 3), 
-                                           stop_words="english")
+                                           ngram_range=(1, 3), # considers word groupings in n-gram range (in this case, 1 to 3)
+                                           stop_words="english") # additional stop word removal
 
         # Initialize BERTopic model
         topic_model = BERTopic(top_n_words=tpc, 
