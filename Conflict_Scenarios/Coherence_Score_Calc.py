@@ -103,10 +103,9 @@ for tpc in topics_per_cluster:
         topic_model = BERTopic(top_n_words=tpc, 
                                min_topic_size=30, # note: min_topic_size is not used when the HDBSCAN algorithm is specified
                                umap_model=umap_model, 
-                               hdbscan_model=hdbscan_model,
-                               embedding_model=embeddings)
+                               hdbscan_model=hdbscan_model)
 
-        topics, probs = topic_model.fit_transform(get_text)
+        topics, probs = topic_model.fit_transform(get_text, embeddings)
 
         # Get topics as a dictionary
         topic_dict = topic_model.get_topics()
