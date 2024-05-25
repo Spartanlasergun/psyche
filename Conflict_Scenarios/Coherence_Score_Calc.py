@@ -103,7 +103,6 @@ for tpc in topics_per_cluster:
 
         # Setup BERTopic with a custom CountVectorizer
         vectorizer_model = CountVectorizer(min_df=10, # minimum word frequency occurence for topic inclusion
-                                           max_features=150, # top 'n' most frequently occuring words to be included in the topic term matrix
                                            ngram_range=(1, 3), # considers word groupings in n-gram range (in this case, 1 to 3)
                                            stop_words="english") # additional stop word removal
 
