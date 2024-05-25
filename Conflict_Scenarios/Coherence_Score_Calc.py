@@ -59,26 +59,28 @@ print("Preprocessing Text...")
 get_text, tokenized_corpus = preprocessing(documents)
 
 
+#------------------------------------------------------------------------------------------------------------
+# Calculate Coherence - GRID SEARCH
+topics_per_cluster = [3] #range(2, 6, 1)
+cluster_size = range(10, 31, 1)
+
 # Set up UMAP with a fixed random state
 print("Setting up BERTopic model...")
 umap_model = UMAP(n_neighbors=15, n_components=5, min_dist=0.0, metric='cosine', random_state=42)
 
-
-#------------------------------------------------------------------------------------------------------------
-# Calculate Coherence - GRID SEARCH
-topics_per_cluster = range(2, 6, 1)
-cluster_size = range(10, 21, 1)
-
 # set transformer model for use with BERTopic
 sentence_model = SentenceTransformer("all-mpnet-base-v2")
+# Pre-calculate embeddings
+print("    Pre-Caculating Embeddings...")
+embeddings = sentence_model.encode(get_text, show_progress_bar=True)
 
 # create dictionary of unique words from the tokenized corpus
-print("Creating dictionary for Gensim calculation...")
+print("    Creating dictionary for Gensim calculation...")
 dict_ = corpora.Dictionary(tokenized_corpus)
 
 # The doc_term_matrix contain tuple entries with the token_id for each word in the corpus, along with its frequency of
 # occurence.
-print("Creating document term matrix for Gensim calculation...")
+print("    Creating document term matrix for Gensim calculation...")
 doc_term_matrix = [dict_.doc2bow(i) for i in tokenized_corpus]
 
 best_cm = -1
@@ -95,13 +97,14 @@ for tpc in topics_per_cluster:
         # set up clustering algorithm
         hdbscan_model = HDBSCAN(min_cluster_size=cs, 
                                 metric='euclidean', 
-                                cluster_selection_method='eom')
+                                cluster_selection_method='eom',
+                                prediction_data=True)
 
         topic_model = BERTopic(top_n_words=tpc, 
                                min_topic_size=30, # note: min_topic_size is not used when the HDBSCAN algorithm is specified
                                umap_model=umap_model, 
                                hdbscan_model=hdbscan_model,
-                               embedding_model=sentence_model)
+                               embedding_model=embeddings)
 
         topics, probs = topic_model.fit_transform(get_text)
 
