@@ -66,8 +66,8 @@ umap_model = UMAP(n_neighbors=15, n_components=5, min_dist=0.0, metric='cosine',
 
 #------------------------------------------------------------------------------------------------------------
 # Calculate Coherence - GRID SEARCH
-topics_per_cluster = range(2, 7, 1)
-cluster_size = range(2, 15, 1)
+topics_per_cluster = range(2, 6, 1)
+cluster_size = range(10, 21, 1)
 
 # set transformer model for use with BERTopic
 sentence_model = SentenceTransformer("all-mpnet-base-v2")
