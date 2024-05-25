@@ -11,6 +11,7 @@ from gensim.models.coherencemodel import CoherenceModel
 from sentence_transformers import SentenceTransformer
 from sklearn.feature_extraction.text import CountVectorizer
 from bertopic.vectorizers import ClassTfidfTransformer
+from sklearn.cluster import KMeans # for k-mean clustering test/tuning
 
 # Read Data From Archive
 print("Reading Data...")
@@ -64,7 +65,7 @@ get_text, tokenized_corpus = preprocessing(documents)
 #------------------------------------------------------------------------------------------------------------
 # Calculate Coherence - GRID SEARCH
 topics_per_cluster = range(2, 6, 1)
-cluster_size = range(10, 31, 1)
+cluster_size = range(2, 51, 1)
 
 # Set up UMAP with a fixed random state
 print("Setting up BERTopic model...")
@@ -97,10 +98,11 @@ for tpc in topics_per_cluster:
         print("Calculating Scores:\ntopics per cluster = " + str(tpc) + "\n" + "min cluster size = " + str(cs))
         
         # Setup clustering algorithm
-        hdbscan_model = HDBSCAN(min_cluster_size=cs, 
-                                metric='euclidean', 
-                                cluster_selection_method='eom',
-                                prediction_data=True)
+        #hdbscan_model = HDBSCAN(min_cluster_size=cs, 
+        #                        metric='euclidean', 
+        #                        cluster_selection_method='eom',
+        #                        prediction_data=True)
+        cluster_model = KMeans(n_clusters=cs)
 
         # Setup CountVectorizer
         vectorizer_model = CountVectorizer(ngram_range=(1, 3), # considers word groupings in n-gram range (in this case, 1 to 3)
@@ -114,7 +116,7 @@ for tpc in topics_per_cluster:
         topic_model = BERTopic(top_n_words=tpc, 
                                min_topic_size=30, # note: min_topic_size is not used when the HDBSCAN algorithm is specified
                                umap_model=umap_model, 
-                               hdbscan_model=hdbscan_model,
+                               hdbscan_model=cluster_model,
                                vectorizer_model=vectorizer_model,
                                ctfidf_model=ctfidf_model)
 
