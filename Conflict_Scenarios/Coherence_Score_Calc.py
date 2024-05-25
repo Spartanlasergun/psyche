@@ -10,6 +10,7 @@ from gensim import corpora
 from gensim.models.coherencemodel import CoherenceModel
 from sentence_transformers import SentenceTransformer
 from sklearn.feature_extraction.text import CountVectorizer
+from bertopic.vectorizers import ClassTfidfTransformer
 
 # Read Data From Archive
 print("Reading Data...")
@@ -36,7 +37,7 @@ def preprocessing(documents):
 
     stop_words = list(set(stopwords.words('english')))
     others = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve", " ",
-              "get", "conflict"]
+              "get", "conflict", "really"]
     for item in others:
         stop_words.append(item)
     
@@ -101,16 +102,21 @@ for tpc in topics_per_cluster:
                                 cluster_selection_method='eom',
                                 prediction_data=True)
 
-        # Setup BERTopic with a custom CountVectorizer
+        # Setup CountVectorizer
         vectorizer_model = CountVectorizer(ngram_range=(1, 3), # considers word groupings in n-gram range (in this case, 1 to 3)
                                            stop_words="english") # additional stop word removal
+
+        # Setup c-TF-IDF model
+        ctfidf_model = ClassTfidfTransformer(bm25_weighting=True, # weighting that works better with small datasets
+                                             reduce_frequent_words=True)
 
         # Initialize BERTopic model
         topic_model = BERTopic(top_n_words=tpc, 
                                min_topic_size=30, # note: min_topic_size is not used when the HDBSCAN algorithm is specified
                                umap_model=umap_model, 
                                hdbscan_model=hdbscan_model,
-                               vectorizer_model=vectorizer_model)
+                               vectorizer_model=vectorizer_model,
+                               ctfidf_model=ctfidf_model)
 
         # Generate Topics
         topics, probs = topic_model.fit_transform(get_text, embeddings)
