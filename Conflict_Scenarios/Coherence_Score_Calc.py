@@ -91,7 +91,7 @@ ctfidf_model = ClassTfidfTransformer(bm25_weighting=True, # weighting that works
 
 # Setup representation model for fine tuning topics post extraction
 print("    Initializing representation model...")
-representation_model = KeyBERTInspired()
+#representation_model = KeyBERTInspired()
 
 # create dictionary of unique words from the tokenized corpus
 print("    Creating dictionary for Gensim calculation...")
@@ -127,8 +127,8 @@ for tpc in topics_per_cluster:
                                umap_model=umap_model, 
                                hdbscan_model=hdbscan_model,
                                vectorizer_model=vectorizer_model,
-                               ctfidf_model=ctfidf_model,
-                               representation_model=representation_model)
+                               ctfidf_model=ctfidf_model)
+                               #representation_model=representation_model)
 
         # Generate Topics
         topics, probs = topic_model.fit_transform(get_text, embeddings)
