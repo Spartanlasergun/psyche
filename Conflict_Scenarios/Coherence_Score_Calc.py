@@ -66,18 +66,19 @@ get_text, tokenized_corpus = preprocessing(documents)
 
 #------------------------------------------------------------------------------------------------------------
 # Calculate Coherence - GRID SEARCH
-topics_per_cluster = [5] #range(2, 6, 1)
+topics_per_cluster = range(2, 6, 1)
 cluster_size = range(10, 21, 1)
 
-# Set up UMAP with a fixed random state
 print("Setting up BERTopic model...")
+
+# Set up UMAP with a fixed random state
 umap_model = UMAP(n_neighbors=15, n_components=5, min_dist=0.0, metric='cosine', random_state=42)
 
 # set transformer model for use with BERTopic
 sentence_model = SentenceTransformer("all-mpnet-base-v2")
 # Pre-calculate embeddings
-#print("    Pre-Caculating Embeddings...")
-#embeddings = sentence_model.encode(get_text, show_progress_bar=True)
+print("    Pre-Caculating Embeddings...")
+embeddings = sentence_model.encode(get_text, show_progress_bar=True)
 
 # Setup CountVectorizer
 print("    Initializing count vectorizer...")
@@ -88,10 +89,6 @@ vectorizer_model = CountVectorizer(ngram_range=(1, 3), # considers word grouping
 print("    Initializing custom ctfidf_model...")
 ctfidf_model = ClassTfidfTransformer(bm25_weighting=True, # weighting that works better with small datasets
                                      reduce_frequent_words=True)
-
-# Setup representation model for fine tuning topics post extraction
-print("    Initializing representation model...")
-representation_model = KeyBERTInspired()
 
 # create dictionary of unique words from the tokenized corpus
 print("    Creating dictionary for Gensim calculation...")
@@ -127,12 +124,10 @@ for tpc in topics_per_cluster:
                                umap_model=umap_model, 
                                hdbscan_model=hdbscan_model,
                                vectorizer_model=vectorizer_model,
-                               ctfidf_model=ctfidf_model,
-                               embedding_model=sentence_model,
-                               representation_model=representation_model)
+                               ctfidf_model=ctfidf_model)
 
         # Generate Topics
-        topics, probs = topic_model.fit_transform(get_text) #, embeddings)
+        topics, probs = topic_model.fit_transform(get_text, embeddings)
 
         # Get topics as a dictionary
         topic_dict = topic_model.get_topics()
