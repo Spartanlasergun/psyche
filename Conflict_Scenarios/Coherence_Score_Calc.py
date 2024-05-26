@@ -79,6 +79,20 @@ sentence_model = SentenceTransformer("all-mpnet-base-v2")
 print("    Pre-Caculating Embeddings...")
 embeddings = sentence_model.encode(get_text, show_progress_bar=True)
 
+# Setup CountVectorizer
+print("    Initializing count vectorizer...")
+vectorizer_model = CountVectorizer(ngram_range=(1, 3), # considers word groupings in n-gram range (in this case, 1 to 3)
+                                   stop_words="english") # additional stop word removal
+
+# Setup c-TF-IDF model
+print("    Initializing custom ctfidf_model...")
+ctfidf_model = ClassTfidfTransformer(bm25_weighting=True, # weighting that works better with small datasets
+                                     reduce_frequent_words=True)
+
+# Setup representation model for fine tuning topics post extraction
+print("    Initializing representation model...")
+representation_model = KeyBERTInspired()
+
 # create dictionary of unique words from the tokenized corpus
 print("    Creating dictionary for Gensim calculation...")
 dict_ = corpora.Dictionary(tokenized_corpus)
@@ -97,65 +111,52 @@ scoresheet = open("scores.txt", 'w', encoding='utf-8')
 for tpc in topics_per_cluster:
     print("------------------------------------------------------------------------------------------")
     for cs in cluster_size:
-        try:
-            print("Calculating Scores:\ntopics per cluster = " + str(tpc) + "\n" + "min cluster size = " + str(cs))
-            
-            # Setup clustering algorithm
-            hdbscan_model = HDBSCAN(min_cluster_size=cs, 
-                                    metric='euclidean', 
-                                    cluster_selection_method='eom',
-                                    prediction_data=True)
+        print("Calculating Scores:\ntopics per cluster = " + str(tpc) + "\n" + "min cluster size = " + str(cs))
+        
+        # Setup clustering algorithm
+        hdbscan_model = HDBSCAN(min_cluster_size=cs, 
+                                metric='euclidean', 
+                                cluster_selection_method='eom',
+                                prediction_data=True)
 
-            #cluster_model = KMeans(n_clusters=cs) # K-means model is typically less effective that HDBSCAN
+        #cluster_model = KMeans(n_clusters=cs) # K-means model is typically less effective that HDBSCAN
 
-            # Setup CountVectorizer
-            vectorizer_model = CountVectorizer(ngram_range=(1, 3), # considers word groupings in n-gram range (in this case, 1 to 3)
-                                               stop_words="english") # additional stop word removal
+        # Initialize BERTopic model
+        topic_model = BERTopic(top_n_words=tpc, 
+                               min_topic_size=30, # note: min_topic_size is not used when the HDBSCAN algorithm is specified
+                               umap_model=umap_model, 
+                               hdbscan_model=hdbscan_model,
+                               vectorizer_model=vectorizer_model,
+                               ctfidf_model=ctfidf_model,
+                               representation_model=representation_model)
 
-            # Setup c-TF-IDF model
-            ctfidf_model = ClassTfidfTransformer(bm25_weighting=True, # weighting that works better with small datasets
-                                                 reduce_frequent_words=True)
+        # Generate Topics
+        topics, probs = topic_model.fit_transform(get_text, embeddings)
 
-            # Setup representation model for fine tuning topics post extraction
-            representation_model = KeyBERTInspired()
+        # Get topics as a dictionary
+        topic_dict = topic_model.get_topics()
+        topic_list = list(topic_dict.values())
+        # Convert topics dictionary to a list of lists
+        raw_topics = []
+        for item in topic_list:
+            temp = []
+            for topics in item:
+                temp.append(topics[0])
+            raw_topics.append(temp)
 
-            # Initialize BERTopic model
-            topic_model = BERTopic(top_n_words=tpc, 
-                                   min_topic_size=30, # note: min_topic_size is not used when the HDBSCAN algorithm is specified
-                                   umap_model=umap_model, 
-                                   hdbscan_model=hdbscan_model,
-                                   vectorizer_model=vectorizer_model,
-                                   ctfidf_model=ctfidf_model,
-                                   representation_model=representation_model)
+        raw_topics.pop(0) # remove low prob words
 
-            # Generate Topics
-            topics, probs = topic_model.fit_transform(get_text, embeddings)
+        #calculate coherence and obtain score
+        cm = CoherenceModel(topics=raw_topics, texts=tokenized_corpus, corpus=doc_term_matrix, dictionary=dict_, coherence='c_npmi')
+        coherence = cm.get_coherence()
+        temp = str(coherence) + "," + str(tpc) + "," + str(cs) + "\n"
 
-            # Get topics as a dictionary
-            topic_dict = topic_model.get_topics()
-            topic_list = list(topic_dict.values())
-            # Convert topics dictionary to a list of lists
-            raw_topics = []
-            for item in topic_list:
-                temp = []
-                for topics in item:
-                    temp.append(topics[0])
-                raw_topics.append(temp)
+        scoresheet.write(temp)
 
-            raw_topics.pop(0) # remove low prob words
+        if coherence > best_cm:
+            best_cm = coherence
+            high_score = [best_cm, tpc]
 
-            #calculate coherence and obtain score
-            cm = CoherenceModel(topics=raw_topics, texts=tokenized_corpus, corpus=doc_term_matrix, dictionary=dict_, coherence='c_npmi')
-            coherence = cm.get_coherence()
-            temp = str(coherence) + "," + str(tpc) + "," + str(cs) + "\n"
-
-            scoresheet.write(temp)
-
-            if coherence > best_cm:
-                best_cm = coherence
-                high_score = [best_cm, tpc]
-        except:
-            print("error...")
 
 scoresheet.close()
 print("High Score:")
