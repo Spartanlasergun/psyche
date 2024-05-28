@@ -68,11 +68,10 @@ get_text, tokenized_corpus = preprocessing(documents)
 # Calculate Coherence - GRID SEARCH
 topics_per_cluster = range(2, 6, 1)
 cluster_size = range(10, 21, 1)
+neighbors_range = range(5, 26, 1)
+components_range = range(2, 11, 1)
 
 print("Setting up BERTopic model...")
-
-# Set up UMAP with a fixed random state
-umap_model = UMAP(n_neighbors=15, n_components=5, min_dist=0.0, metric='cosine', random_state=42)
 
 # set transformer model for use with BERTopic
 sentence_model = SentenceTransformer("all-mpnet-base-v2")
@@ -108,50 +107,59 @@ scoresheet = open("scores.txt", 'w', encoding='utf-8')
 for tpc in topics_per_cluster:
     print("------------------------------------------------------------------------------------------")
     for cs in cluster_size:
-        print("Calculating Scores:\ntopics per cluster = " + str(tpc) + "\n" + "min cluster size = " + str(cs))
-        
-        # Setup clustering algorithm
-        hdbscan_model = HDBSCAN(min_cluster_size=cs, 
-                                metric='euclidean', 
-                                cluster_selection_method='eom',
-                                prediction_data=True)
+        for nb in neighbors_range:
+            for comp in components_range:
+                print("Calculating Scores: tpc = " + str(tpc) + ", min clus = " + str(cs) + ", nb = " + str(nb) + ", comp = " + str(comp))
 
-        #cluster_model = KMeans(n_clusters=cs) # K-means model is typically less effective that HDBSCAN
+                # Set up UMAP with a fixed random state
+                umap_model = UMAP(n_neighbors=nb, 
+                                  n_components=comp, 
+                                  min_dist=0.0, 
+                                  metric='cosine', 
+                                  random_state=42)
+                
+                # Setup clustering algorithm
+                hdbscan_model = HDBSCAN(min_cluster_size=cs, 
+                                        metric='euclidean', 
+                                        cluster_selection_method='eom',
+                                        prediction_data=True)
 
-        # Initialize BERTopic model
-        topic_model = BERTopic(top_n_words=tpc, 
-                               min_topic_size=30, # note: min_topic_size is not used when the HDBSCAN algorithm is specified
-                               umap_model=umap_model, 
-                               hdbscan_model=hdbscan_model,
-                               vectorizer_model=vectorizer_model,
-                               ctfidf_model=ctfidf_model)
+                #cluster_model = KMeans(n_clusters=cs) # K-means model is typically less effective that HDBSCAN
 
-        # Generate Topics
-        topics, probs = topic_model.fit_transform(get_text, embeddings)
+                # Initialize BERTopic model
+                topic_model = BERTopic(top_n_words=tpc, 
+                                       min_topic_size=30, # note: min_topic_size is not used when the HDBSCAN algorithm is specified
+                                       umap_model=umap_model, 
+                                       hdbscan_model=hdbscan_model,
+                                       vectorizer_model=vectorizer_model,
+                                       ctfidf_model=ctfidf_model)
 
-        # Get topics as a dictionary
-        topic_dict = topic_model.get_topics()
-        topic_list = list(topic_dict.values())
-        # Convert topics dictionary to a list of lists
-        raw_topics = []
-        for item in topic_list:
-            temp = []
-            for topics in item:
-                temp.append(topics[0])
-            raw_topics.append(temp)
+                # Generate Topics
+                topics, probs = topic_model.fit_transform(get_text, embeddings)
 
-        raw_topics.pop(0) # remove low prob words
+                # Get topics as a dictionary
+                topic_dict = topic_model.get_topics()
+                topic_list = list(topic_dict.values())
+                # Convert topics dictionary to a list of lists
+                raw_topics = []
+                for item in topic_list:
+                    temp = []
+                    for topics in item:
+                        temp.append(topics[0])
+                    raw_topics.append(temp)
 
-        #calculate coherence and obtain score
-        cm = CoherenceModel(topics=raw_topics, texts=tokenized_corpus, corpus=doc_term_matrix, dictionary=dict_, coherence='c_npmi')
-        coherence = cm.get_coherence()
-        temp = str(coherence) + "," + str(tpc) + "," + str(cs) + "\n"
+                raw_topics.pop(0) # remove low prob words
 
-        scoresheet.write(temp)
+                #calculate coherence and obtain score
+                cm = CoherenceModel(topics=raw_topics, texts=tokenized_corpus, corpus=doc_term_matrix, dictionary=dict_, coherence='c_npmi')
+                coherence = cm.get_coherence()
+                temp = str(coherence) + "," + str(tpc) + "," + str(cs) + "," + str(nb) + "," + str(comp) + "\n"
 
-        if coherence > best_cm:
-            best_cm = coherence
-            high_score = [best_cm, tpc]
+                scoresheet.write(temp)
+
+                if coherence > best_cm:
+                    best_cm = coherence
+                    high_score = [best_cm, tpc, nb, comp]
 
 
 scoresheet.close()
