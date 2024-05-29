@@ -15,8 +15,8 @@ from bertopic.vectorizers import ClassTfidfTransformer
 class grid_search:
 	def __init__(self, documents=[None], stopwords=[None], ngram_range=(1, 3), bm25_weighting=False,
 				 show_progress_bar=True, reduce_frequent_words=True, transformer_model="all-mpnet-base-v2",
-				 tpc=[None], cs=[None], nb=[None], comp=[None], umap_metric=[None], hbd_metric=[None]):
-		if (documents[0] != None) and (tpc[0] != None) and (nb != None) and (cs != None) and (comp != None) and (umap_metric[0] != None) and (hbd_metric != None):
+				 tpc=[None], cs=[None], nb=[None], comp=[None], umap_metric=[None], hdb_metric=[None]):
+		if (documents[0] != None) and (tpc[0] != None) and (nb != None) and (cs != None) and (comp != None) and (umap_metric[0] != None) and (hdb_metric != None):
 			self.documents = documents
 			self.stopwords = stopwords
 
@@ -28,7 +28,7 @@ class grid_search:
 			sentence_model = SentenceTransformer(transformer_model)
 			# Pre-calculate embeddings
 			print("Initializing...")
-			self.embeddings = sentence_model.encode(get_text, show_progress_bar=show_progress_bar)
+			self.embeddings = sentence_model.encode(self.get_text, show_progress_bar=show_progress_bar)
 
 			self.vectorizer_model = CountVectorizer(ngram_range=ngram_range, # considers word groupings in n-gram range (in this case, 1 to 3)
 	            									stop_words="english") # additional stop word removal
@@ -37,11 +37,11 @@ class grid_search:
 	                                            	  reduce_frequent_words=reduce_frequent_words)
 
 			# create dictionary of unique words from the tokenized corpus
-			self.dict_ = corpora.Dictionary(tokenized_corpus)
+			self.dict_ = corpora.Dictionary(self.tokenized_corpus)
 
 			# The doc_term_matrix contain tuple entries with the token_id for each word in the corpus, 
 			# along with its frequency of occurence.
-			self.doc_term_matrix = [dict_.doc2bow(i) for i in tokenized_corpus]
+			self.doc_term_matrix = [dict_.doc2bow(i) for i in self.tokenized_corpus]
 
 			# generate grid
 			grid = []
@@ -50,7 +50,7 @@ class grid_search:
 					for c in nb:
 						for d in comp:
 							for e in umap_metric:
-								for f in hbd_metric:
+								for f in hdb_metric:
 									temp = [a, b, c, d, e, f]
 									grid.append(temp)
 
