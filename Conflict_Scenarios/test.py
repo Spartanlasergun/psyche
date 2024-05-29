@@ -15,11 +15,11 @@ check = grid_search(documents=conflict,
                     bm25_weighting=True,
                     show_progress_bar=True,
                     reduce_frequent_words=True,
-                    tpc= range(2, 6, 1),
-                    cs= range(10, 21, 1),
-                    nb= range(5, 26, 1),
-                    comp= range(2, 11, 1),
+                    tpc= [2, 3],
+                    cs= [13],
+                    nb= [10],
+                    comp= [3],
                     umap_metric=['cosine'],
                     hdb_metric=['euclidean'],
-                    thread_count=20)
+                    worker_count=2)
 

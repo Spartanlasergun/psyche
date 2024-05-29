@@ -1,9 +1,9 @@
 import pandas as pd
 import spacy
 import nltk
-import threading
 import psutil
 import os
+import multiprocessing
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 from bertopic import BERTopic
@@ -19,7 +19,7 @@ class grid_search:
 	def __init__(self, documents=[None], stopwords=[None], ngram_range=(1, 3), bm25_weighting=False,
 				 show_progress_bar=True, reduce_frequent_words=True, transformer_model="all-mpnet-base-v2",
 				 tpc=[None], cs=[None], nb=[None], comp=[None], umap_metric=[None], hdb_metric=[None],
-				 thread_count=10):
+				 worker_count=10):
 		if (documents[0] != None) and (tpc[0] != None) and (nb != None) and (cs != None) and (comp != None) and (umap_metric[0] != None) and (hdb_metric != None):
 			self.documents = documents
 			self.stopwords = stopwords
@@ -65,21 +65,21 @@ class grid_search:
 			# calculate coherence scores
 			print("Calculating Coherence Scores...")
 			self.scores = []
-			threads = []
+			processes = []
 			for batch in batches:
 				for parameters in batch:
-					score = threading.Thread(target=self.coherence_calc, args=(parameters[0],
-																	   		   parameters[1],
-																	   		   parameters[2],
-																	   		   parameters[3],
-																	   		   parameters[4],
-																	   		   parameters[5]))
-					threads.append(score)
+					score = multiprocessing.Process(target=self.coherence_calc, args=(parameters[0],
+																		   		      parameters[1],
+																		   		      parameters[2],
+																		   		      parameters[3],
+																		   		      parameters[4],
+																		   		      parameters[5]))
+					processes.append(score)
 					score.start()
 
-				# Wait for all threads to complete
-				for thread in threads:
-					thread.join()
+				# Wait for all processes to complete
+				for p in processes:
+					p.join()
 
 				# Print CPU and memory usage after each cycle
 				self.print_usage()
@@ -180,6 +180,6 @@ class grid_search:
 	def print_usage(self):
 	    process = psutil.Process(os.getpid())
 	    memory_info = process.memory_info()
-	    cpu_percent = process.cpu_percent(interval=1)
+	    cpu_percent = process.cpu_percent(interval=0.0)
 	    print(f'CPU usage: {cpu_percent}%')
 	    print(f'Memory usage: RSS={memory_info.rss / (1024 ** 2)} MB, VMS={memory_info.vms / (1024 ** 2)} MB')
