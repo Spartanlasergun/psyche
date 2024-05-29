@@ -41,7 +41,7 @@ class grid_search:
 
 			# The doc_term_matrix contain tuple entries with the token_id for each word in the corpus, 
 			# along with its frequency of occurence.
-			self.doc_term_matrix = [dict_.doc2bow(i) for i in self.tokenized_corpus]
+			self.doc_term_matrix = [self.dict_.doc2bow(i) for i in self.tokenized_corpus]
 
 			# generate grid
 			grid = []
