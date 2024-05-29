@@ -131,50 +131,53 @@ class grid_search:
 	    return processed, corpus_tokens
 
 	def coherence_calc(self, tpc, cs, nb, comp, umap_met, hdb_met):
-		# Set up UMAP with a fixed random state
-		umap_model = UMAP(n_neighbors=nb, 
-		                  n_components=comp, 
-		                  min_dist=0.0, 
-		                  metric=umap_met, 
-		                  random_state=42)
+		try:
+			# Set up UMAP with a fixed random state
+			umap_model = UMAP(n_neighbors=nb, 
+			                  n_components=comp, 
+			                  min_dist=0.0, 
+			                  metric=umap_met, 
+			                  random_state=42)
 
-		# Setup clustering algorithm
-		hdbscan_model = HDBSCAN(min_cluster_size=cs, 
-		                        metric=hdb_met,
-		                        cluster_selection_method='eom',
-		                        prediction_data=True)
+			# Setup clustering algorithm
+			hdbscan_model = HDBSCAN(min_cluster_size=cs, 
+			                        metric=hdb_met,
+			                        cluster_selection_method='eom',
+			                        prediction_data=True)
 
 
-		# Initialize BERTopic model
-		topic_model = BERTopic(top_n_words=tpc, 
-		                       min_topic_size=30, # note: min_topic_size is not used when the HDBSCAN algorithm is specified
-		                       umap_model=umap_model, 
-		                       hdbscan_model=hdbscan_model,
-		                       vectorizer_model=self.vectorizer_model,
-		                       ctfidf_model=self.ctfidf_model)
+			# Initialize BERTopic model
+			topic_model = BERTopic(top_n_words=tpc, 
+			                       min_topic_size=30, # note: min_topic_size is not used when the HDBSCAN algorithm is specified
+			                       umap_model=umap_model, 
+			                       hdbscan_model=hdbscan_model,
+			                       vectorizer_model=self.vectorizer_model,
+			                       ctfidf_model=self.ctfidf_model)
 
-		# Generate Topics
-		topics, probs = topic_model.fit_transform(self.get_text, self.embeddings)
+			# Generate Topics
+			topics, probs = topic_model.fit_transform(self.get_text, self.embeddings)
 
-		# Get topics as a dictionary
-		topic_dict = topic_model.get_topics()
-		topic_list = list(topic_dict.values())
-		# Convert topics dictionary to a list of lists
-		raw_topics = []
-		for item in topic_list:
-		    temp = []
-		    for topics in item:
-		        temp.append(topics[0])
-		    raw_topics.append(temp)
+			# Get topics as a dictionary
+			topic_dict = topic_model.get_topics()
+			topic_list = list(topic_dict.values())
+			# Convert topics dictionary to a list of lists
+			raw_topics = []
+			for item in topic_list:
+			    temp = []
+			    for topics in item:
+			        temp.append(topics[0])
+			    raw_topics.append(temp)
 
-		raw_topics.pop(0) # remove low prob words
+			raw_topics.pop(0) # remove low prob words
 
-		#calculate coherence and obtain score
-		cm = CoherenceModel(topics=raw_topics, texts=self.tokenized_corpus, corpus=self.doc_term_matrix, dictionary=self.dict_, coherence='c_npmi')
-		coherence = cm.get_coherence()
+			#calculate coherence and obtain score
+			cm = CoherenceModel(topics=raw_topics, texts=self.tokenized_corpus, corpus=self.doc_term_matrix, dictionary=self.dict_, coherence='c_npmi')
+			coherence = cm.get_coherence()
 
-		scoresheet = [coherence, tpc, cs, nb, comp, umap_met, hdb_met]
-		self.scores.append(scoresheet)
+			scoresheet = [coherence, tpc, cs, nb, comp, umap_met, hdb_met]
+			self.scores.append(scoresheet)
+		except:
+			pass
 
 	# Function to print CPU and memory usage
 	def print_usage(self):
