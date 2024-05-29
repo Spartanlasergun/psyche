@@ -148,7 +148,7 @@ class grid_search:
 		raw_topics.pop(0) # remove low prob words
 
 		#calculate coherence and obtain score
-		cm = CoherenceModel(topics=raw_topics, texts=self.tokenized_corpus, corpus=doc_term_matrix, dictionary=dict_, coherence='c_npmi')
+		cm = CoherenceModel(topics=raw_topics, texts=self.tokenized_corpus, corpus=self.doc_term_matrix, dictionary=self.dict_, coherence='c_npmi')
 		coherence = cm.get_coherence()
 
 		return coherence
