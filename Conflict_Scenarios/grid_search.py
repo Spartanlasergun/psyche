@@ -18,7 +18,8 @@ from bertopic.vectorizers import ClassTfidfTransformer
 class grid_search:
 	def __init__(self, documents=[None], stopwords=[None], ngram_range=(1, 3), bm25_weighting=False,
 				 show_progress_bar=True, reduce_frequent_words=True, transformer_model="all-mpnet-base-v2",
-				 tpc=[None], cs=[None], nb=[None], comp=[None], umap_metric=[None], hdb_metric=[None]):
+				 tpc=[None], cs=[None], nb=[None], comp=[None], umap_metric=[None], hdb_metric=[None],
+				 thread_count=10):
 		if (documents[0] != None) and (tpc[0] != None) and (nb != None) and (cs != None) and (comp != None) and (umap_metric[0] != None) and (hdb_metric != None):
 			self.documents = documents
 			self.stopwords = stopwords
@@ -57,29 +58,37 @@ class grid_search:
 									temp = [a, b, c, d, e, f]
 									grid.append(temp)
 
+			
+			# Creating batches from grid
+			batches = [grid[i:i + thread_count] for i in range(0, len(grid), thread_count)]
+
 			# calculate coherence scores
 			print("Calculating Coherence Scores...")
 			self.scores = []
 			threads = []
-			for parameters in grid:
-				score = threading.Thread(target=self.coherence_calc, args=(parameters[0],
-																   		   parameters[1],
-																   		   parameters[2],
-																   		   parameters[3],
-																   		   parameters[4],
-																   		   parameters[5]))
-				threads.append(score)
-				score.start()
+			for batch in batches:
+				for parameters in batch:
+					score = threading.Thread(target=self.coherence_calc, args=(parameters[0],
+																	   		   parameters[1],
+																	   		   parameters[2],
+																	   		   parameters[3],
+																	   		   parameters[4],
+																	   		   parameters[5]))
+					threads.append(score)
+					score.start()
 
-			# Wait for all threads to complete
-			for thread in threads:
-				thread.join()
+				# Wait for all threads to complete
+				for thread in threads:
+					thread.join()
 
-			# Print CPU and memory usage after each cycle
-			self.print_usage()
+				# Print CPU and memory usage after each cycle
+				self.print_usage()
 
+			scoresheet = open("grid_scores.txt", 'w', encoding='utf8')
 			for item in self.scores:
-				print(item)
+				temp = str(item[0]) + "," + str(item[1]) + "," + str(item[2]) + "," + str(item[3]) + "," + str(item[4]) + "," + str(item[5]) + "," + str(item[6]) + "\n"
+				scoresheet.write(temp)
+			scoresheet.close()
 				
 		else:
 			print("Initialization Error: Incorrect Parameter")
