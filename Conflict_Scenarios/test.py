@@ -16,9 +16,9 @@ check = grid_search(documents=conflict,
                     show_progress_bar=True,
                     reduce_frequent_words=True,
                     tpc=[2],
-                    cs=[15],
-                    nb=[15],
-                    comp=[5],
+                    cs=[10],
+                    nb=[13],
+                    comp=[3],
                     umap_metric=['cosine'],
                     hdb_metric=['euclidean'])
 
