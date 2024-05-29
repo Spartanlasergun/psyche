@@ -2,6 +2,8 @@ import pandas as pd
 import spacy
 import nltk
 import threading
+import psutil
+import os
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 from bertopic import BERTopic
@@ -72,6 +74,9 @@ class grid_search:
 			# Wait for all threads to complete
 			for thread in threads:
 				thread.join()
+
+			# Print CPU and memory usage after each cycle
+			self.print_usage()
 
 			for item in self.scores:
 				print(item)
@@ -161,3 +166,11 @@ class grid_search:
 
 		scoresheet = [coherence, tpc, cs, nb, comp, umap_met, hdb_met]
 		self.scores.append(scoresheet)
+
+	# Function to print CPU and memory usage
+	def print_usage(self):
+	    process = psutil.Process(os.getpid())
+	    memory_info = process.memory_info()
+	    cpu_percent = process.cpu_percent(interval=1)
+	    print(f'CPU usage: {cpu_percent}%')
+	    print(f'Memory usage: RSS={memory_info.rss / (1024 ** 2)} MB, VMS={memory_info.vms / (1024 ** 2)} MB')
