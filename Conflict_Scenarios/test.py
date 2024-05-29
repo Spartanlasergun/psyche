@@ -1,25 +1,24 @@
-scores = open("scores.txt", "r", encoding='utf8')
-data = scores.read().splitlines()
-scores.close()
+import pandas as pd
+from grid_search import grid_search
 
-params = []
+# Read Data From Archive
+data = pd.read_csv('Conflict Scenarios Research.csv')
+# create documents list
+conflict = data["Describe a past experience you've had that involved conflict with a family member, friend, or significant other. Be as detailed as you like."].tolist()
 
-for item in data:
-    temp = item.split(",")
-    params.append(temp)
+stopwords = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve", " ",
+             "get", "conflict", "really"]
 
-good = []
-for parameter in params:
-    coherence = float(parameter[0])
-    if coherence >= 0.18:
-        good.append(parameter)
-
-extract = open("good_scores.txt", 'w', encoding='utf8')
-for parang in good:
-    temp = ""
-    for item in parang:
-        temp = temp + str(item) + ","
-    temp = temp + "\n"
-    extract.write(temp)
-extract.close()
+check = grid_search(documents=conflict, 
+                    ngram_range=(1, 3),
+                    stopwords=stopwords,
+                    bm25_weighting=True,
+                    show_progress_bar=True,
+                    reduce_frequent_words=True,
+                    tpc=[2],
+                    cs=[15],
+                    nb=[15],
+                    comp=[5],
+                    umap_metric=['cosine'],
+                    hdb_metric=['euclidean'])
 
