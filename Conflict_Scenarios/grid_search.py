@@ -58,7 +58,7 @@ class grid_search:
 			print("Calculating Coherence Scores...")
 			scores = []
 			for parameters in grid:
-				score = coherence_calc(tpc=parameters[0],
+				score = self.coherence_calc(tpc=parameters[0],
 							   		   cs=parameters[1],
 							   		   nb=parameters[2],
 							   		   comp=parameters[3],
