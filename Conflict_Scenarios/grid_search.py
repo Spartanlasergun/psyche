@@ -1,6 +1,7 @@
 import pandas as pd
 import spacy
 import nltk
+import threading
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 from bertopic import BERTopic
@@ -56,18 +57,25 @@ class grid_search:
 
 			# calculate coherence scores
 			print("Calculating Coherence Scores...")
-			scores = []
+			self.scores = []
+			threads = []
 			for parameters in grid:
-				score = self.coherence_calc(tpc=parameters[0],
-							   		   cs=parameters[1],
-							   		   nb=parameters[2],
-							   		   comp=parameters[3],
-							   		   umap_met=parameters[4],
-							   		   hdb_met=parameters[5])
-				temp = parameters
-				temp.append(score)
-				scores.append(temp)
-			print(scores)
+				score = threading.Thread(target=self.coherence_calc, args=(parameters[0],
+																   		   parameters[1],
+																   		   parameters[2],
+																   		   parameters[3],
+																   		   parameters[4],
+																   		   parameters[5]))
+				threads.append(score)
+				score.start()
+
+			# Wait for all threads to complete
+			for thread in threads:
+				thread.join()
+
+			for item in self.scores:
+				print(item)
+				
 		else:
 			print("Initialization Error: Incorrect Parameter")
 
@@ -151,4 +159,5 @@ class grid_search:
 		cm = CoherenceModel(topics=raw_topics, texts=self.tokenized_corpus, corpus=self.doc_term_matrix, dictionary=self.dict_, coherence='c_npmi')
 		coherence = cm.get_coherence()
 
-		return coherence
+		scoresheet = [coherence, tpc, cs, nb, comp, umap_met, hdb_met]
+		self.scores.append(scoresheet)
