@@ -60,7 +60,7 @@ class grid_search:
 
 			
 			# Creating batches from grid
-			batches = [grid[i:i + thread_count] for i in range(0, len(grid), thread_count)]
+			batches = [grid[i:i + worker_count] for i in range(0, len(grid), worker_count)]
 
 			# calculate coherence scores
 			print("Calculating Coherence Scores...")
