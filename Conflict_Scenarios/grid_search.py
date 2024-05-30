@@ -184,10 +184,10 @@ if __name__ == "__main__":
 	                    bm25_weighting=True,
 	                    show_progress_bar=True,
 	                    reduce_frequent_words=True,
-	                    tpc= [2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-	                    cs= [13],
-	                    nb= [10],
+	                    tpc= range(2, 6, 1),
+	                    cs= range(10, 21, 1),
+	                    nb= range(5, 26, 1),
 	                    comp= [3],
 	                    umap_metric=['cosine'],
 	                    hdb_metric=['euclidean'],
-	                    worker_count=5)
+	                    worker_count=8)
