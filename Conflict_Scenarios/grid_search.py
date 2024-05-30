@@ -16,13 +16,13 @@ from sklearn.feature_extraction.text import CountVectorizer
 from bertopic.vectorizers import ClassTfidfTransformer
 
 class grid_search:
-	def __init__(self, documents=[None], stopwords=[None], ngram_range=(1, 3), bm25_weighting=False,
+	def __init__(self, documents=[None], add_stopwords=[None], ngram_range=(1, 3), bm25_weighting=False,
 				 show_progress_bar=True, reduce_frequent_words=True, transformer_model="all-mpnet-base-v2",
 				 tpc=[None], cs=[None], nb=[None], comp=[None], umap_metric=[None], hdb_metric=[None],
 				 worker_count=10):
 		if (documents[0] != None) and (tpc[0] != None) and (nb != None) and (cs != None) and (comp != None) and (umap_metric[0] != None) and (hdb_metric != None):
 			self.documents = documents
-			self.stopwords = stopwords
+			self.add_stopwords = add_stopwords
 
 			# text cleaning and preprocessing
 			print("Cleaning text and preprocessing...")
@@ -113,7 +113,7 @@ class grid_search:
 
 	    stop_words = list(set(stopwords.words('english')))
 	    
-	    for item in self.stopwords:
+	    for item in self.add_stopwords:
 	        stop_words.append(item)
 	    
 	    processed = []
@@ -186,3 +186,28 @@ class grid_search:
 	    cpu_percent = process.cpu_percent(interval=0.0)
 	    print(f'CPU usage: {cpu_percent}%')
 	    print(f'Memory usage: RSS={memory_info.rss / (1024 ** 2)} MB, VMS={memory_info.vms / (1024 ** 2)} MB')
+
+
+
+if __name__ == "__main__":
+	# Read Data From Archive
+	data = pd.read_csv('Conflict Scenarios Research.csv')
+	# create documents list
+	conflict = data["Describe a past experience you've had that involved conflict with a family member, friend, or significant other. Be as detailed as you like."].tolist()
+
+	ud_stopwords = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve", " ",
+	             "get", "conflict", "really"]
+
+	check = grid_search(documents=conflict, 
+	                    ngram_range=(1, 3),
+	                    add_stopwords=ud_stopwords,
+	                    bm25_weighting=True,
+	                    show_progress_bar=True,
+	                    reduce_frequent_words=True,
+	                    tpc= [2, 3],
+	                    cs= [13],
+	                    nb= [10],
+	                    comp= [3],
+	                    umap_metric=['cosine'],
+	                    hdb_metric=['euclidean'],
+	                    worker_count=2)
