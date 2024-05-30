@@ -3,6 +3,7 @@ import spacy
 import nltk
 import os
 import multiprocessing
+import pymongo
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 from bertopic import BERTopic
@@ -45,6 +46,16 @@ class grid_search:
 			# The doc_term_matrix contain tuple entries with the token_id for each word in the corpus, 
 			# along with its frequency of occurence.
 			self.doc_term_matrix = [self.dict_.doc2bow(i) for i in self.tokenized_corpus]
+
+			# connect to mongodb to manage flow of data
+			self.uri = "mongodb+srv://cluster0.cd4m7jc.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority&appName=Cluster0"
+			self.client = pymongo.MongoClient(uri,
+			                             	  tls=True,
+			                             	  tlsCertificateKeyFile='Spartanlasergun-certificate.pem',
+			                             	  server_api=pymongo.server_api.ServerApi(version="1", strict=True, deprecation_errors=True))
+
+			self.db = client['watchtower']
+			self.collection = db['coherence_parameters']
 
 			# generate grid
 			grid = []
@@ -163,8 +174,13 @@ class grid_search:
 				cm = CoherenceModel(topics=raw_topics, texts=self.tokenized_corpus, corpus=self.doc_term_matrix, dictionary=self.dict_, coherence='c_npmi')
 				coherence = cm.get_coherence()
 
-				scoresheet = [coherence, parameter[0], parameter[1], parameter[2], parameter[3], parameter[4], parameter[5]]
-				print(scoresheet)
+				self.collection.insert_one({"coherence" : coherence,
+										    "topics_per_cluster" : parameter[0],
+										    "min_cluster_size" : parameter[1],
+										    "n_neighbors" : parameter[2],
+										    "n_components" : parameter[3],
+										    "umap_metric" : parameter[4],
+										    "hdb_metric" : parameter[5]})
 		except:
 			print("coherence calc error")
 
@@ -184,10 +200,10 @@ if __name__ == "__main__":
 	                    bm25_weighting=True,
 	                    show_progress_bar=True,
 	                    reduce_frequent_words=True,
-	                    tpc= range(2, 6, 1),
-	                    cs= range(10, 21, 1),
-	                    nb= range(5, 26, 1),
+	                    tpc= range(2, 21, 1),
+	                    cs= [10],
+	                    nb= [13],
 	                    comp= [3],
 	                    umap_metric=['cosine'],
 	                    hdb_metric=['euclidean'],
-	                    worker_count=8)
+	                    worker_count=2)

@@ -10,5 +10,6 @@ client = pymongo.MongoClient(uri,
 db = client['watchtower']
 collection = db['coherence_parameters']
 doc_count = collection.count_documents({})
-print(doc_count)
+collection.insert_one({"test_entry" : "This is some test data"})
 
+print("Done")
