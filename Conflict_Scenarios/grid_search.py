@@ -47,16 +47,6 @@ class grid_search:
 			# along with its frequency of occurence.
 			self.doc_term_matrix = [self.dict_.doc2bow(i) for i in self.tokenized_corpus]
 
-			# connect to mongodb to manage flow of data
-			self.uri = "mongodb+srv://cluster0.cd4m7jc.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority&appName=Cluster0"
-			self.client = pymongo.MongoClient(self.uri,
-			                             	  tls=True,
-			                             	  tlsCertificateKeyFile='Spartanlasergun-certificate.pem',
-			                             	  server_api=pymongo.server_api.ServerApi(version="1", strict=True, deprecation_errors=True))
-
-			self.db = client['watchtower']
-			self.collection = db['coherence_parameters']
-
 			# generate grid
 			grid = []
 			for a in tpc:
@@ -130,6 +120,15 @@ class grid_search:
 	    return processed, corpus_tokens
 
 	def coherence_calc(self, parameters):
+		# connect to mongodb to manage flow of data
+		uri = "mongodb+srv://cluster0.cd4m7jc.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority&appName=Cluster0"
+		client = pymongo.MongoClient(uri,
+		                             tls=True,
+		                             tlsCertificateKeyFile='Spartanlasergun-certificate.pem',
+		                             server_api=pymongo.server_api.ServerApi(version="1", strict=True, deprecation_errors=True))
+
+		db = client['watchtower']
+		collection = db['coherence_parameters']
 		try:
 			for parameter in parameters:
 				# Set up UMAP with a fixed random state
@@ -174,13 +173,35 @@ class grid_search:
 				cm = CoherenceModel(topics=raw_topics, texts=self.tokenized_corpus, corpus=self.doc_term_matrix, dictionary=self.dict_, coherence='c_npmi')
 				coherence = cm.get_coherence()
 
-				self.collection.insert_one({"coherence" : coherence,
-										    "topics_per_cluster" : parameter[0],
-										    "min_cluster_size" : parameter[1],
-										    "n_neighbors" : parameter[2],
-										    "n_components" : parameter[3],
-										    "umap_metric" : parameter[4],
-										    "hdb_metric" : parameter[5]})
+				redundancy = False
+				overlap = False
+				# if coherence is high, check for topic redundancy and push to collection
+				if coherence >= 0.17:
+					for topics in raw_topics:
+						if len(topics) != len(set(topics)):
+							redundancy = True
+					if redundancy != True:
+						sets = [set(lst) for lst in raw_topics]
+						n = len(sets)
+
+						overlaps = []
+						for i in range(n):
+						    for j in range(i + 1, n):
+						        intersection = sets[i].intersection(sets[j])
+						        if intersection:
+						            overlaps.append((i, j, intersection))
+						if len(overlaps) > 0:
+							overlap = True
+
+						collection.insert_one({"coherence" : coherence,
+											   "topics_per_cluster" : parameter[0],
+											   "min_cluster_size" : parameter[1],
+											   "n_neighbors" : parameter[2],
+											   "n_components" : parameter[3],
+											   "umap_metric" : parameter[4],
+											   "hdb_metric" : parameter[5],
+											   "overlap" : overlap,
+											   "topics" : raw_topics})
 		except:
 			print("coherence calc error")
 
@@ -189,21 +210,34 @@ if __name__ == "__main__":
 	# Read Data From Archive
 	data = pd.read_csv('Conflict Scenarios Research.csv')
 	# create documents list
-	conflict = data["Describe a past experience you've had that involved conflict with a family member, friend, or significant other. Be as detailed as you like."].tolist()
+	#conflict = data["Describe a past experience you've had that involved conflict with a family member, friend, or significant other. Be as detailed as you like."].tolist()
+	non_conflict = data["Contrary to the previous question, describe a past experience you've had that did not involve conflict with a family member, friend or significant other. Be as detailed as you like."].tolist()
+
+
+	# connect to mongodb to retrieve data and clear old coherence scores
+	uri = "mongodb+srv://cluster0.cd4m7jc.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority&appName=Cluster0"
+	client = pymongo.MongoClient(uri,
+	                             tls=True,
+	                             tlsCertificateKeyFile='Spartanlasergun-certificate.pem',
+	                             server_api=pymongo.server_api.ServerApi(version="1", strict=True, deprecation_errors=True))
+	db = client['watchtower']
+	collection = db['coherence_parameters']
+	collection.delete_many({}) # delete old coherence scores
+
 
 	ud_stopwords = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve", " ",
-	             "get", "conflict", "really"]
+	                "get", "conflict", "really"]
 
-	check = grid_search(documents=conflict, 
+	check = grid_search(documents=non_conflict, 
 	                    ngram_range=(1, 3),
 	                    add_stopwords=ud_stopwords,
 	                    bm25_weighting=True,
 	                    show_progress_bar=True,
 	                    reduce_frequent_words=True,
-	                    tpc= range(2, 21, 1),
-	                    cs= [10],
-	                    nb= [13],
-	                    comp= [3],
+	                    tpc= range(2, 6, 1),
+	                    cs= range(10, 21, 1),
+	                    nb= range(5, 26, 1),
+	                    comp= range(2, 11, 1),
 	                    umap_metric=['cosine'],
 	                    hdb_metric=['euclidean'],
-	                    worker_count=2)
+	                    worker_count=4)

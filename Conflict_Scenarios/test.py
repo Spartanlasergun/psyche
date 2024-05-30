@@ -1,15 +1,14 @@
-import pymongo
+two_d_array = [["a", "b", "c"],
+               ["d", "e", "f"],
+               ["g", "h", "i"]]
+sets = [set(lst) for lst in two_d_array]
+n = len(sets)
 
-uri = "mongodb+srv://cluster0.cd4m7jc.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority&appName=Cluster0"
-client = pymongo.MongoClient(uri,
-                             tls=True,
-                             tlsCertificateKeyFile='Spartanlasergun-certificate.pem',
-                             server_api=pymongo.server_api.ServerApi(version="1", strict=True, deprecation_errors=True))
+overlaps = []
+for i in range(n):
+    for j in range(i + 1, n):
+        intersection = sets[i].intersection(sets[j])
+        if intersection:
+            overlaps.append((i, j, intersection))
 
-
-db = client['watchtower']
-collection = db['coherence_parameters']
-doc_count = collection.count_documents({})
-collection.insert_one({"test_entry" : "This is some test data"})
-
-print("Done")
+print(len(overlaps))
