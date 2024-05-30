@@ -49,7 +49,7 @@ class grid_search:
 
 			# connect to mongodb to manage flow of data
 			self.uri = "mongodb+srv://cluster0.cd4m7jc.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority&appName=Cluster0"
-			self.client = pymongo.MongoClient(uri,
+			self.client = pymongo.MongoClient(self.uri,
 			                             	  tls=True,
 			                             	  tlsCertificateKeyFile='Spartanlasergun-certificate.pem',
 			                             	  server_api=pymongo.server_api.ServerApi(version="1", strict=True, deprecation_errors=True))
