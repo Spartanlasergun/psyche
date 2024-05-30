@@ -64,7 +64,6 @@ class grid_search:
 
 			# calculate coherence scores
 			print("Calculating Coherence Scores...")
-			self.scores = []
 			processes = []
 			for batch in batches:
 				score = multiprocessing.Process(target=self.coherence_calc, args=(batch))
@@ -163,7 +162,7 @@ class grid_search:
 				cm = CoherenceModel(topics=raw_topics, texts=self.tokenized_corpus, corpus=self.doc_term_matrix, dictionary=self.dict_, coherence='c_npmi')
 				coherence = cm.get_coherence()
 
-				scoresheet = [coherence, tpc, cs, nb, comp, umap_met, hdb_met]
+				scoresheet = [coherence, parameter[0], parameter[1], parameter[2], parameter[3], parameter[4], parameter[5]]
 				print(scoresheet)
 		except:
 			print("coherence calc error")
