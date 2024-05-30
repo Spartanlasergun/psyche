@@ -65,12 +65,13 @@ class grid_search:
 			# calculate coherence scores
 			print("Calculating Coherence Scores...")
 			processes = []
+			count = 0
 			for batch in batches:
-				score = multiprocessing.Process(target=self.coherence_calc, args=(batch))
+				score = multiprocessing.Process(target=self.coherence_calc, args=(batch,))
 				processes.append(score)
 				score.start()
-				batch_num = str(batches.index(batch))
-				print("Starting Batch: " + batch_num)
+				count = count + 1
+				print("Starting Batch: " + str(count))
 
 			# Wait for all processes to complete
 			for p in processes:
@@ -117,9 +118,9 @@ class grid_search:
 	            
 	    return processed, corpus_tokens
 
-	def coherence_calc(self, batch):
+	def coherence_calc(self, parameters):
 		try:
-			for parameter in batch:
+			for parameter in parameters:
 				# Set up UMAP with a fixed random state
 				umap_model = UMAP(n_neighbors=parameter[2], 
 				                  n_components=parameter[3], 
