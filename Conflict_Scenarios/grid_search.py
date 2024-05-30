@@ -76,6 +76,7 @@ class grid_search:
 																		   		      parameters[5]))
 					processes.append(score)
 					score.start()
+					print(batch.index(parameters))
 
 				# Wait for all processes to complete
 				for p in processes:
@@ -84,11 +85,7 @@ class grid_search:
 				# Print CPU and memory usage after each cycle
 				self.print_usage()
 
-			scoresheet = open("grid_scores.txt", 'w', encoding='utf8')
-			for item in self.scores:
-				temp = str(item[0]) + "," + str(item[1]) + "," + str(item[2]) + "," + str(item[3]) + "," + str(item[4]) + "," + str(item[5]) + "," + str(item[6]) + "\n"
-				scoresheet.write(temp)
-			scoresheet.close()
+			print(self.scores)
 				
 		else:
 			print("Initialization Error: Incorrect Parameter")
@@ -175,9 +172,10 @@ class grid_search:
 			coherence = cm.get_coherence()
 
 			scoresheet = [coherence, tpc, cs, nb, comp, umap_met, hdb_met]
+			print(scoresheet)
 			self.scores.append(scoresheet)
 		except:
-			pass
+			print("coherence calc error")
 
 	# Function to print CPU and memory usage
 	def print_usage(self):
@@ -204,10 +202,10 @@ if __name__ == "__main__":
 	                    bm25_weighting=True,
 	                    show_progress_bar=True,
 	                    reduce_frequent_words=True,
-	                    tpc= [2, 3],
+	                    tpc= [2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
 	                    cs= [13],
 	                    nb= [10],
 	                    comp= [3],
 	                    umap_metric=['cosine'],
 	                    hdb_metric=['euclidean'],
-	                    worker_count=2)
+	                    worker_count=5)
