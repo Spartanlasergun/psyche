@@ -1,25 +1,17 @@
-import pandas as pd
-from grid_search import grid_search
+tpc= range(2, 6, 1)
+cs= range(10, 21, 1)
+nb= range(5, 26, 1)
+comp= [3]
+umap_metric=['cosine']
+hdb_metric=['euclidean']
 
-# Read Data From Archive
-data = pd.read_csv('Conflict Scenarios Research.csv')
-# create documents list
-conflict = data["Describe a past experience you've had that involved conflict with a family member, friend, or significant other. Be as detailed as you like."].tolist()
-
-stopwords = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve", " ",
-             "get", "conflict", "really"]
-
-check = grid_search(documents=conflict, 
-                    ngram_range=(1, 3),
-                    stopwords=stopwords,
-                    bm25_weighting=True,
-                    show_progress_bar=True,
-                    reduce_frequent_words=True,
-                    tpc= [2, 3],
-                    cs= [13],
-                    nb= [10],
-                    comp= [3],
-                    umap_metric=['cosine'],
-                    hdb_metric=['euclidean'],
-                    worker_count=2)
-
+# generate grid
+grid = []
+for a in tpc:
+    for b in cs:
+        for c in nb:
+            for d in comp:
+                for e in umap_metric:
+                    for f in hdb_metric:
+                        temp = [a, b, c, d, e, f]
+                        grid.append(temp)
