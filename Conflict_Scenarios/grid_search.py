@@ -1,7 +1,6 @@
 import pandas as pd
 import spacy
 import nltk
-import psutil
 import os
 import multiprocessing
 from nltk.stem import WordNetLemmatizer
@@ -60,33 +59,25 @@ class grid_search:
 
 			
 			# Creating batches from grid
-			batches = [grid[i:i + worker_count] for i in range(0, len(grid), worker_count)]
+			batch_size = int(len(grid) / worker_count)
+			batches = [grid[i:i + batch_size] for i in range(0, len(grid), batch_size)] # creates batches equivalent to the number of workers
 
 			# calculate coherence scores
 			print("Calculating Coherence Scores...")
 			self.scores = []
 			processes = []
 			for batch in batches:
-				for parameters in batch:
-					score = multiprocessing.Process(target=self.coherence_calc, args=(parameters[0],
-																		   		      parameters[1],
-																		   		      parameters[2],
-																		   		      parameters[3],
-																		   		      parameters[4],
-																		   		      parameters[5]))
-					processes.append(score)
-					score.start()
-					print(batch.index(parameters))
+				score = multiprocessing.Process(target=self.coherence_calc, args=(batch))
+				processes.append(score)
+				score.start()
+				batch_num = str(batches.index(batch))
+				print("Starting Batch: " + batch_num)
 
-				# Wait for all processes to complete
-				for p in processes:
-					p.join()
+			# Wait for all processes to complete
+			for p in processes:
+				p.join()
 
-				# Print CPU and memory usage after each cycle
-				self.print_usage()
-
-			print(self.scores)
-				
+			print("Grid Search Complete")
 		else:
 			print("Initialization Error: Incorrect Parameter")
 
@@ -127,64 +118,55 @@ class grid_search:
 	            
 	    return processed, corpus_tokens
 
-	def coherence_calc(self, tpc, cs, nb, comp, umap_met, hdb_met):
+	def coherence_calc(self, batch):
 		try:
-			# Set up UMAP with a fixed random state
-			umap_model = UMAP(n_neighbors=nb, 
-			                  n_components=comp, 
-			                  min_dist=0.0, 
-			                  metric=umap_met, 
-			                  random_state=42)
+			for parameter in batch:
+				# Set up UMAP with a fixed random state
+				umap_model = UMAP(n_neighbors=parameter[2], 
+				                  n_components=parameter[3], 
+				                  min_dist=0.0, 
+				                  metric=parameter[4], 
+				                  random_state=42)
 
-			# Setup clustering algorithm
-			hdbscan_model = HDBSCAN(min_cluster_size=cs, 
-			                        metric=hdb_met,
-			                        cluster_selection_method='eom',
-			                        prediction_data=True)
+				# Setup clustering algorithm
+				hdbscan_model = HDBSCAN(min_cluster_size=parameter[1], 
+				                        metric=parameter[5],
+				                        cluster_selection_method='eom',
+				                        prediction_data=True)
 
 
-			# Initialize BERTopic model
-			topic_model = BERTopic(top_n_words=tpc, 
-			                       min_topic_size=30, # note: min_topic_size is not used when the HDBSCAN algorithm is specified
-			                       umap_model=umap_model, 
-			                       hdbscan_model=hdbscan_model,
-			                       vectorizer_model=self.vectorizer_model,
-			                       ctfidf_model=self.ctfidf_model)
+				# Initialize BERTopic model
+				topic_model = BERTopic(top_n_words=parameter[0], 
+				                       min_topic_size=30, # note: min_topic_size is not used when the HDBSCAN algorithm is specified
+				                       umap_model=umap_model, 
+				                       hdbscan_model=hdbscan_model,
+				                       vectorizer_model=self.vectorizer_model,
+				                       ctfidf_model=self.ctfidf_model)
 
-			# Generate Topics
-			topics, probs = topic_model.fit_transform(self.get_text, self.embeddings)
+				# Generate Topics
+				topics, probs = topic_model.fit_transform(self.get_text, self.embeddings)
 
-			# Get topics as a dictionary
-			topic_dict = topic_model.get_topics()
-			topic_list = list(topic_dict.values())
-			# Convert topics dictionary to a list of lists
-			raw_topics = []
-			for item in topic_list:
-			    temp = []
-			    for topics in item:
-			        temp.append(topics[0])
-			    raw_topics.append(temp)
+				# Get topics as a dictionary
+				topic_dict = topic_model.get_topics()
+				topic_list = list(topic_dict.values())
+				# Convert topics dictionary to a list of lists
+				raw_topics = []
+				for item in topic_list:
+				    temp = []
+				    for topics in item:
+				        temp.append(topics[0])
+				    raw_topics.append(temp)
 
-			raw_topics.pop(0) # remove low prob words
+				raw_topics.pop(0) # remove low prob words
 
-			#calculate coherence and obtain score
-			cm = CoherenceModel(topics=raw_topics, texts=self.tokenized_corpus, corpus=self.doc_term_matrix, dictionary=self.dict_, coherence='c_npmi')
-			coherence = cm.get_coherence()
+				#calculate coherence and obtain score
+				cm = CoherenceModel(topics=raw_topics, texts=self.tokenized_corpus, corpus=self.doc_term_matrix, dictionary=self.dict_, coherence='c_npmi')
+				coherence = cm.get_coherence()
 
-			scoresheet = [coherence, tpc, cs, nb, comp, umap_met, hdb_met]
-			print(scoresheet)
-			self.scores.append(scoresheet)
+				scoresheet = [coherence, tpc, cs, nb, comp, umap_met, hdb_met]
+				print(scoresheet)
 		except:
 			print("coherence calc error")
-
-	# Function to print CPU and memory usage
-	def print_usage(self):
-	    process = psutil.Process(os.getpid())
-	    memory_info = process.memory_info()
-	    cpu_percent = process.cpu_percent(interval=0.0)
-	    print(f'CPU usage: {cpu_percent}%')
-	    print(f'Memory usage: RSS={memory_info.rss / (1024 ** 2)} MB, VMS={memory_info.vms / (1024 ** 2)} MB')
-
 
 
 if __name__ == "__main__":
