@@ -129,6 +129,7 @@ class grid_search:
 
 		db = client['watchtower']
 		collection = db['coherence_parameters']
+		stop = db['stopwords']
 		try:
 			for parameter in parameters:
 				# Set up UMAP with a fixed random state
@@ -167,7 +168,14 @@ class grid_search:
 				        temp.append(topics[0])
 				    raw_topics.append(temp)
 
+				# push stopwords to database for post-hoc processing
+				stoppush = raw_topics[0]
+				for stopdoc in stoppush:
+					stop.insert_one({"stopword" : stopdoc})
+
+
 				raw_topics.pop(0) # remove low prob words
+
 
 				#calculate coherence and obtain score
 				cm = CoherenceModel(topics=raw_topics, texts=self.tokenized_corpus, corpus=self.doc_term_matrix, dictionary=self.dict_, coherence='c_npmi')
@@ -226,7 +234,7 @@ if __name__ == "__main__":
 
 
 	ud_stopwords = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve", " ",
-	                "get", "conflict", "really"]
+	                "get", "conflict", "really", "went", "time", "dunno", "yeah"]
 
 	check = grid_search(documents=non_conflict, 
 	                    ngram_range=(1, 3),
