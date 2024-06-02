@@ -11,7 +11,6 @@ from gensim.models.coherencemodel import CoherenceModel
 from sentence_transformers import SentenceTransformer
 from sklearn.feature_extraction.text import CountVectorizer
 from bertopic.vectorizers import ClassTfidfTransformer
-from bertopic.representation import KeyBERTInspired
 
 
 # preprocessing function
