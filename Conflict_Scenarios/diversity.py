@@ -56,7 +56,7 @@ documents = data["Contrary to the previous question, describe a past experience 
 print("Number of Documents: " + str(len(documents)))
 
 stop = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve", " ",
-        "get", "conflict", "really", "went"]
+        "get", "conflict", "really", "went", "time", "dunno", "yeah"]
 
 get_text, tokenized_corpus = preprocessing(documents, stop)
 
