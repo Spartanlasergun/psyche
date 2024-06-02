@@ -30,9 +30,10 @@ labels = list(counter.keys())
 counts = list(counter.values())
 
 # Create the bar chart
-plt.figure(figsize=(10, 15))
+plt.figure(figsize=(10, 8))
 plt.grid(True)
-plt.barh(labels, counts, color='skyblue', height=0.5)
+plt.bar(labels, counts, color='skyblue')
+plt.xticks(rotation=90)
 
 # Add title and labels
 plt.title('Frequency Of Occurence For Each Outlier')

@@ -237,7 +237,9 @@ if __name__ == "__main__":
 
 
 	ud_stopwords = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve", " ",
-	                "get", "conflict", "really", "went", "time", "dunno", "yeah"]
+	                "get", "conflict", "really", "went", "time", "dunno", "yeah", "friend", "like", "good", "school",
+	                "people", "family", "party", "got", "yeah", "know", "alex", "took", "know", "life", "thing",
+	                "tell", "going", "ago", "told", "ha"]
 
 	check = grid_search(documents=non_conflict, 
 	                    ngram_range=(1, 3),
