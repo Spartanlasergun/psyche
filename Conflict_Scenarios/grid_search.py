@@ -228,12 +228,12 @@ if __name__ == "__main__":
 	                             tls=True,
 	                             tlsCertificateKeyFile='Spartanlasergun-certificate.pem',
 	                             server_api=pymongo.server_api.ServerApi(version="1", strict=True, deprecation_errors=True))
-	db = client['watchtower']
-	coherence = db['coherence_parameters']
-	coherence.delete_many({}) # clear old coherence scores
+	clear_db = client['watchtower']
+	clear_coherence = clear_db['coherence_parameters']
+	clear_coherence.delete_many({}) # clear old coherence scores
 
-	stopwords = db['stopwords'] 
-	stopwords.delete_many({}) # clear topic outliers 
+	clear_stop = clear_db['stopwords'] 
+	clear_stop.delete_many({}) # clear topic outliers 
 
 
 	ud_stopwords = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve", " ",
