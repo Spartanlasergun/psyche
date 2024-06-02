@@ -210,8 +210,9 @@ class grid_search:
 											   "hdb_metric" : parameter[5],
 											   "overlap" : overlap,
 											   "topics" : raw_topics})
-		except:
-			print("coherence calc error")
+		except Exception as e:
+			print(f"coherence block error: {e}")
+
 
 
 if __name__ == "__main__":
@@ -239,7 +240,7 @@ if __name__ == "__main__":
 	ud_stopwords = ["wa", "art", "one", "nt", "lot", "-", ".", ",", "?", "!", "'s", "n't", "'re", "'m", "'ve", " ",
 	                "get", "conflict", "really", "went", "time", "dunno", "yeah", "friend", "like", "good", "school",
 	                "people", "family", "party", "got", "yeah", "know", "alex", "took", "know", "life", "thing",
-	                "tell", "going", "ago", "told", "ha"]
+	                "tell", "going", "ago", "told", "ha", "year", "asked"]
 
 	check = grid_search(documents=non_conflict, 
 	                    ngram_range=(1, 3),
