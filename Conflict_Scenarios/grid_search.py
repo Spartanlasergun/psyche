@@ -130,8 +130,8 @@ class grid_search:
 		db = client['watchtower']
 		collection = db['coherence_parameters']
 		stop = db['stopwords']
-		try:
-			for parameter in parameters:
+		for parameter in parameters:
+			try:
 				# Set up UMAP with a fixed random state
 				umap_model = UMAP(n_neighbors=parameter[2], 
 				                  n_components=parameter[3], 
@@ -176,19 +176,22 @@ class grid_search:
 
 				raw_topics.pop(0) # remove low prob words
 
-
-				#calculate coherence and obtain score
-				cm = CoherenceModel(topics=raw_topics, texts=self.tokenized_corpus, corpus=self.doc_term_matrix, dictionary=self.dict_, coherence='c_npmi')
-				coherence = cm.get_coherence()
-
+				# check for redundant topics to ensure coherence score is not inflated
 				redundancy = False
-				overlap = False
-				# if coherence is high, check for topic redundancy and push to collection
-				if coherence >= 0.17:
-					for topics in raw_topics:
-						if len(topics) != len(set(topics)):
-							redundancy = True
-					if redundancy != True:
+				for topics in raw_topics:
+					if len(topics) != len(set(topics)):
+						redundancy = True
+
+				# if topics are not redundant check for valid coherence score
+				if redundancy != True:
+					#calculate coherence and obtain score
+					cm = CoherenceModel(topics=raw_topics, texts=self.tokenized_corpus, corpus=self.doc_term_matrix, dictionary=self.dict_, coherence='c_npmi')
+					coherence = cm.get_coherence()
+
+					# if coherence is high enough, check for overlap and push parameters and output to database
+					if coherence >= 0.17:
+						# check for direct overlap
+						overlap = False
 						sets = [set(lst) for lst in raw_topics]
 						n = len(sets)
 
@@ -210,8 +213,8 @@ class grid_search:
 											   "hdb_metric" : parameter[5],
 											   "overlap" : overlap,
 											   "topics" : raw_topics})
-		except Exception as e:
-			print(f"coherence block error: {e}")
+			except Exception as e:
+				print(f"coherence block error: {e}")
 
 
 
