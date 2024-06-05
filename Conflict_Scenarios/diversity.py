@@ -11,6 +11,7 @@ from gensim.models.coherencemodel import CoherenceModel
 from sentence_transformers import SentenceTransformer
 from sklearn.feature_extraction.text import CountVectorizer
 from bertopic.vectorizers import ClassTfidfTransformer
+from octis.evaluation_metrics.diversity_metrics import TopicDiversity
 
 # preprocessing function
 def preprocessing(documents, stop):
@@ -124,3 +125,11 @@ for item in topic_list:
 raw_topics.pop(0) # remove low prob words
 
 print(raw_topics)
+
+
+dataset = {"topics" : raw_topics}
+
+
+metric = TopicDiversity(topk=2) # Initialize metric
+topic_diversity_score = metric.score(dataset) # Compute score of the metric
+print(f"diversity: {topic_diversity_score}")
