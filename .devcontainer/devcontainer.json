@@ -1,0 +1,15 @@
+{
+    "name": "Python 3.12",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "settings": {
+        "python.pythonPath": "/usr/bin/python3.12"
+    },
+    "extensions": [
+        "ms-python.python",
+        "ms-azuretools.vscode-docker"
+    ],
+    "postCreateCommand": "pip install -r requirements.txt",
+    "remoteUser": "vscode"
+}
