@@ -86,46 +86,46 @@ class grid_search:
 
 	# preprocessing function
 	def preprocessing(self):
-	    # Load the English language model
-	    nlp = spacy.load("en_core_web_sm")
+		# Load the English language model
+		nlp = spacy.load("en_core_web_sm")
 
-	    lemmatizer = WordNetLemmatizer()
+		lemmatizer = WordNetLemmatizer()
 
-	    tokenized_docs = []
-	    for item in self.documents:
-	        doc = nlp(item)
-	        tokens = [token.text for token in doc] # process token into list
-	        lowercase_list = [word.lower() for word in tokens] # lowercase all words
-	        # lemmatize words to prevent overlap between extremely similar words (e.g. "friend" and "friends")
-	        lemmatized_words = [lemmatizer.lemmatize(word) for word in lowercase_list]
-	        tokenized_docs.append(lemmatized_words) 
+		tokenized_docs = []
+		for item in self.documents:
+			doc = nlp(item)
+			tokens = [token.text for token in doc] # process token into list
+			lowercase_list = [word.lower() for word in tokens] # lowercase all words
+			# lemmatize words to prevent overlap between extremely similar words (e.g. "friend" and "friends")
+			lemmatized_words = [lemmatizer.lemmatize(word) for word in lowercase_list]
+			tokenized_docs.append(lemmatized_words) 
 
-	    stop_words = list(set(stopwords.words('english')))
-	    
-	    for item in self.add_stopwords:
-	        stop_words.append(item)
-	    
-	    processed = []
-	    corpus_tokens = []
-	    for token_text in tokenized_docs:
-	        output = ""
-	        temp = []
-	        for word in token_text:
-	            if word not in stop_words:
-	                output = output + " " + word
-	                temp.append(word)
-	        processed.append(output)
-	        corpus_tokens.append(temp)
-	            
-	    return processed, corpus_tokens
+		stop_words = list(set(stopwords.words('english')))
+
+		for item in self.add_stopwords:
+			stop_words.append(item)
+
+		processed = []
+		corpus_tokens = []
+		for token_text in tokenized_docs:
+			output = ""
+			temp = []
+			for word in token_text:
+				if word not in stop_words:
+					output = output + " " + word
+					temp.append(word)
+			processed.append(output)
+			corpus_tokens.append(temp)
+				
+		return processed, corpus_tokens
 
 	def coherence_calc(self, parameters):
 		# connect to mongodb to manage flow of data
 		uri = "mongodb+srv://cluster0.cd4m7jc.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority&appName=Cluster0"
 		client = pymongo.MongoClient(uri,
-		                             tls=True,
-		                             tlsCertificateKeyFile='Spartanlasergun-certificate.pem',
-		                             server_api=pymongo.server_api.ServerApi(version="1", strict=True, deprecation_errors=True))
+										tls=True,
+										tlsCertificateKeyFile='Spartanlasergun-certificate.pem',
+										server_api=pymongo.server_api.ServerApi(version="1", strict=True, deprecation_errors=True))
 
 		db = client['watchtower']
 		collection = db['coherence_parameters']
@@ -134,25 +134,25 @@ class grid_search:
 			try:
 				# Set up UMAP with a fixed random state
 				umap_model = UMAP(n_neighbors=parameter[2], 
-				                  n_components=parameter[3], 
-				                  min_dist=0.0, 
-				                  metric=parameter[4], 
-				                  random_state=42)
+									n_components=parameter[3], 
+									min_dist=0.0, 
+									metric=parameter[4], 
+									random_state=42)
 
 				# Setup clustering algorithm
 				hdbscan_model = HDBSCAN(min_cluster_size=parameter[1], 
-				                        metric=parameter[5],
-				                        cluster_selection_method='eom',
-				                        prediction_data=True)
+										metric=parameter[5],
+										cluster_selection_method='eom',
+										prediction_data=True)
 
 
 				# Initialize BERTopic model
 				topic_model = BERTopic(top_n_words=parameter[0], 
-				                       min_topic_size=30, # note: min_topic_size is not used when the HDBSCAN algorithm is specified
-				                       umap_model=umap_model, 
-				                       hdbscan_model=hdbscan_model,
-				                       vectorizer_model=self.vectorizer_model,
-				                       ctfidf_model=self.ctfidf_model)
+										min_topic_size=30, # note: min_topic_size is not used when the HDBSCAN algorithm is specified
+										umap_model=umap_model, 
+										hdbscan_model=hdbscan_model,
+										vectorizer_model=self.vectorizer_model,
+										ctfidf_model=self.ctfidf_model)
 
 				# Generate Topics
 				topics, probs = topic_model.fit_transform(self.get_text, self.embeddings)
@@ -163,10 +163,10 @@ class grid_search:
 				# Convert topics dictionary to a list of lists
 				raw_topics = []
 				for item in topic_list:
-				    temp = []
-				    for topics in item:
-				        temp.append(topics[0])
-				    raw_topics.append(temp)
+					temp = []
+					for topics in item:
+						temp.append(topics[0])
+					raw_topics.append(temp)
 
 				# push stopwords to database for post-hoc processing
 				stoppush = raw_topics[0]
@@ -197,22 +197,22 @@ class grid_search:
 
 						overlaps = []
 						for i in range(n):
-						    for j in range(i + 1, n):
-						        intersection = sets[i].intersection(sets[j])
-						        if intersection:
-						            overlaps.append((i, j, intersection))
+							for j in range(i + 1, n):
+								intersection = sets[i].intersection(sets[j])
+								if intersection:
+									overlaps.append((i, j, intersection))
 						if len(overlaps) > 0:
 							overlap = True
 
 						collection.insert_one({"coherence" : coherence,
-											   "topics_per_cluster" : parameter[0],
-											   "min_cluster_size" : parameter[1],
-											   "n_neighbors" : parameter[2],
-											   "n_components" : parameter[3],
-											   "umap_metric" : parameter[4],
-											   "hdb_metric" : parameter[5],
-											   "overlap" : overlap,
-											   "topics" : raw_topics})
+												"topics_per_cluster" : parameter[0],
+												"min_cluster_size" : parameter[1],
+												"n_neighbors" : parameter[2],
+												"n_components" : parameter[3],
+												"umap_metric" : parameter[4],
+												"hdb_metric" : parameter[5],
+												"overlap" : overlap,
+												"topics" : raw_topics})
 			except Exception as e:
 				print(f"coherence block error: {e}")
 
